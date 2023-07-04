@@ -10,10 +10,18 @@ if(strlen($_SESSION['alogin'])=="")
 if(isset($_POST['submit']))
 {
 	
-    $marks=array();
-$class=$_POST['class'];
-$studentid=$_POST['studentid']; 
-$mark=$_POST['marks'];
+
+
+$usn=$_POST['usn']; 
+$subject=$_POST['subject'];
+$mse1=$_POST['mse1'];
+$mse2=$_POST['mse2'];
+$task1=$_POST['task1'];
+$task2=$_POST['task2'];
+$cie=$_POST['cie'];
+$see=$_POST['see'];
+$sgpa=$_POST['sgpa'];
+$cgpa=$_POST['cgpa'];
 
  $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
  $stmt->execute(array(':cid' => $class));
@@ -158,51 +166,68 @@ var abh=clid+'$'+val;
                                            
                                             <div class="panel-body">
 <?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
+    <div class="alert alert-success left-icon-alert" role="alert">
+        <strong>Well done!</strong><?php echo htmlentities($msg); ?>
+    </div><?php } 
+    else if($error){?>
     <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+        <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+    </div>
+<?php } ?>
+                                         <form class="form-horizontal" method="post">
+
+                                        <div class="form-group">
+                                            <label for="default" class="col-sm-2 control-label">Class</label>
+                                            <div class="col-sm-10">
+                                                <select name="class" class="form-control clid" id="classid" onChange="getStudent(this.value);" required="required">
+                                                <option value="">Select Class</option>
+                                                <?php $sql = "SELECT * from tblclasses";
+                                                    $query = $dbh->prepare($sql);
+                                                    $query->execute();
+                                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                    if($query->rowCount() > 0)
+                                                    {
+                                                        foreach($results as $result)
+                                                        {   ?>
+                                                        <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->ClassName); ?>&nbsp; Section-<?php echo htmlentities($result->Section); ?></option>
+                                                <?php }} ?>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <?php } ?>
-                                                <form class="form-horizontal" method="post">
+                                        <div class="form-group">
+                                            <label for="date" class="col-sm-2 control-label ">Mentor</label>
+                                            <div class="col-sm-10">
+                                                <select name="mentor" class="form-control stid" id="mentor" required="required" onChange="getresult(this.value);">
+                                                </select>
+                                            </div>
+                                        </div>
 
- <div class="form-group">
-<label for="default" class="col-sm-2 control-label">Class</label>
- <div class="col-sm-10">
- <select name="class" class="form-control clid" id="classid" onChange="getStudent(this.value);" required="required">
-<option value="">Select Class</option>
-<?php $sql = "SELECT * from tblclasses";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->ClassName); ?>&nbsp; Section-<?php echo htmlentities($result->Section); ?></option>
-<?php }} ?>
- </select>
-                                                        </div>
-                                                    </div>
-<div class="form-group">
-                                                        <label for="date" class="col-sm-2 control-label ">Student Name</label>
-                                                        <div class="col-sm-10">
-                                                    <select name="studentid" class="form-control stid" id="studentid" required="required" onChange="getresult(this.value);">
-                                                    </select>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="form-group">
-                                                      
+
+
+                                        <div class="form-group">
+                                            <label for="date" class="col-sm-2 control-label ">Student usn</label>
+                                            <div class="col-sm-10">
+                                                <select name="usn" class="form-control stid" id="usn" required="required" onChange="getresult(this.value);">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date" class="col-sm-2 control-label ">Student usn</label>
+                                            <div class="col-sm-10">
+                                                <select name="usn" class="form-control stid" id="usn" required="required" onChange="getresult(this.value);">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">                                              
                                                         <div class="col-sm-10">
                                                     <div  id="reslt">
                                                     </div>
                                                         </div>
                                                     </div>
                                                     
-<div class="form-group">
+                                                        <div class="form-group">
                                                         <label for="date" class="col-sm-2 control-label">Subjects</label>
                                                         <div class="col-sm-10">
                                                     <div  id="subject">
