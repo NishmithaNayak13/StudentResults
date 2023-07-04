@@ -1,49 +1,45 @@
 <?php
-session_start();
-error_reporting(0);
-include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
+include('includes/topbar.php');
+include('include/leftbar.php');
+if(!isset($_SESSION['UserName']))
+{   
+    echo "<script>window.location='index.php';</script>";
+}
 if(isset($_POST['submit']))
 {
-	
+        
     $marks=array();
-$class=$_POST['class'];
-$studentid=$_POST['studentid']; 
-$mark=$_POST['marks'];
+    $class=$_POST['class'];
+    $studentid=$_POST['studentid']; 
+    $mark=$_POST['marks'];
 
- $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
- $stmt->execute(array(':cid' => $class));
-  $sid1=array();
- while($row=$stmt->fetch(PDO::FETCH_ASSOC))
- {
-
-array_push($sid1,$row['id']);
-   } 
-  
-for($i=0;$i<count($mark);$i++){
-    $mar=$mark[$i];
-  $sid=$sid1[$i];
-$sql="INSERT INTO  tblresult(StudentId,ClassId,SubjectId,marks) VALUES(:studentid,:class,:sid,:marks)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':studentid',$studentid,PDO::PARAM_STR);
-$query->bindParam(':class',$class,PDO::PARAM_STR);
-$query->bindParam(':sid',$sid,PDO::PARAM_STR);
-$query->bindParam(':marks',$mar,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Result info added successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-}
+    $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
+    $stmt->execute(array(':cid' => $class));
+    $sid1=array();
+    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+    {
+        array_push($sid1,$row['id']);
+    } 
+    for($i=0;$i<count($mark);$i++)
+    {
+        $mar=$mark[$i];
+        $sid=$sid1[$i];
+        $sql="INSERT INTO  tblresult(StudentId,ClassId,SubjectId,marks) VALUES(:studentid,:class,:sid,:marks)";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':studentid',$studentid,PDO::PARAM_STR);
+        $query->bindParam(':class',$class,PDO::PARAM_STR);
+        $query->bindParam(':sid',$sid,PDO::PARAM_STR);
+        $query->bindParam(':marks',$mar,PDO::PARAM_STR);
+        $query->execute();
+        $lastInsertId = $dbh->lastInsertId();
+        if($lastInsertId)
+        {
+            $msg="Result info added successfully";
+        }
+        else 
+        {
+            $error="Something went wrong. Please try again";
+        }
 }
 ?>
 <!DOCTYPE html>

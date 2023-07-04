@@ -1,29 +1,29 @@
 <?php
-session_start();
-error_reporting(0);
-include('db.php');
-if($_SESSION['alogin']!=''){
-$_SESSION['alogin']='';
+include('includes/config.php');
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='dashboard.php';</script>";
 }
 if(isset($_POST['login']))
 {
-$uname=$_POST['username'];
-$password=$_POST['password'];
-$sql ="SELECT UserName,Password FROM admin WHERE UserName='".$uname."' and Password='".$password."'";
-// echo($sql);
-$result = mysqli_query($con, $sql);
-if (mysqli_num_rows($result) == 1) {
-    echo "<script>alert('Login successful!')</script>";
-    echo "<script>window.location='dashboard.php'</script>";
-
-} else {
-    echo "<script>alert('Login failed. Please check your credentials.')</script>";
-    // echo "Login failed. Please check your credentials.";
+    if(isset($_POST['username']))
+    {
+        $password = $_POST['password'];
+        $sql = "SELECT * FROM admin where UserName='$_POST[username]' AND Password='$password'";
+        $qsql = mysqli_query($dbh,$sql);
+        echo mysqli_error($dbh);
+        if(mysqli_num_rows($qsql) == 1)
+        {
+            $rslogin = mysqli_fetch_array($qsql);
+            $_SESSION['UserName'] = $rslogin['UserName'];
+            echo "<script>window.location='dashboard.php';</script>";
+        }
+        else
+        {
+            echo "<script>alert('Wrong Credentials. Please try again');</script>";
+        }
+    }
 }
-
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +98,7 @@ if (mysqli_num_rows($result) == 1) {
                                             <div class="panel">
                                                 <div class="panel-heading">
                                                     <div class="panel-title text-center">
-                                                        <h4>Admin Login</h4>
+                                                        <h4>Admin/Mentor Login</h4>
                                                     </div>
                                                 </div>
                                                 <div class="panel-body p-20">

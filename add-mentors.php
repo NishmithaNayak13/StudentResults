@@ -1,77 +1,58 @@
 <?php
-session_start();
-error_reporting(0);
 include('includes/config.php');
-if(!isset($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
 if(isset($_POST['submit']))
 {
-$name=$_POST['name'];
-$email=$_POST['email']; 
-$password=$_POST['password'];
-// $status='Active';
+    if(isset($_GET['editid']))
+    {
+        $sql = "UPDATE mentors SET Name='$_POST[name]', Department='$_POST[dept]', Designation='$_POST[desig]', Email='$_POST[email]', Password='$_POST[password]', Status='$_POST[status]' WHERE Email='$_GET[editid]'";
+        $qsql = mysqli_query($dbh,$sql);
+        echo mysqli_error($dbh);
+        if(mysqli_affected_rows($dbh) == 1)
+        {
+            echo "<script>alert('Mentor Record Updated Successfully..');</script>";
+			echo "<script>window.location='manage-mentors.php';</script>";
 
-#$status=1;
-#$sql="INSERT INTO  mentors(Name,Email,Gender,Status) VALUES(:name,:email,:gender,:status)";
-#$sql = "INSERT INTO  mentors(Name,Email,Password,Status) VALUES(:name,:email,:password,'Active')";
-$sql = "INSERT INTO mentors (Name, Email, Password, Status) VALUES (:name, :email, :password, 'Active')";
-$query = $dbh->prepare($sql);
-$query->bindParam(':name',$name,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':password',$email,PDO::PARAM_STR);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->execute();
-
-if ($query->errorCode() !== '00000') {
-    $errorInfo = $query->errorInfo();
-    error_log('SQL Error: ' . $errorInfo[2]); // Log the error message
+        }
+    }
+    else
+    {
+        $sql = "INSERT INTO mentors(Name,Department,Designation,Email,Password,Status) VALUES('$_POST[name]','$_POST[dept]','$_POST[desig]','$_POST[email]','$_POST[password]','$_POST[status]')";
+        $qsql = mysqli_query($dbh,$sql);
+        echo mysqli_error($dbh);
+        if(mysqli_affected_rows($dbh)==1)
+        {
+            echo "<script>alert('Registered successfully...');</script>";
+            echo "<script>window.location='dashboard.php';</script>";
+        }
+    }
 }
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
+if(isset($_GET['editid']))
 {
-$msg="Mentor info added successfully";
+	$sqledit= "SELECT * FROM mentors where Email='$_GET[editid]'";
+	$qsqledit = mysqli_query($dbh,$sqledit);
+	$rsedit = mysqli_fetch_array($qsqledit);
 }
-else 
-{
-$error="Something went wrong. Please try again";
-}
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <title>Admin|Mentor </title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
-        <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
-        <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
-        <link rel="stylesheet" href="css/lobipanel/lobipanel.min.css" media="screen" >
-        <link rel="stylesheet" href="css/prism/prism.css" media="screen" >
-        <link rel="stylesheet" href="css/select2/select2.min.css" >
-        <link rel="stylesheet" href="css/main.css" media="screen" >
-        <script src="js/modernizr/modernizr.min.js"></script>
+        
     </head>
     <body class="top-navbar-fixed">
-        <div class="main-wrapper">
-
-            <!-- ========== TOP NAVBAR ========== -->
-  <?php include('includes/topbar.php');?> 
-            <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
+    <div class="main-wrapper">
+              <?php include('includes/topbar.php');?>
             <div class="content-wrapper">
                 <div class="content-container">
 
-                    <!-- ========== LEFT SIDEBAR ========== -->
-                   <?php include('includes/leftbar.php');?>  
-                    <!-- /.left-sidebar -->
+                    <?php include('includes/leftbar.php');?>
 
                     <div class="main-page">
-
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
@@ -104,54 +85,70 @@ $error="Something went wrong. Please try again";
                                                     <h5>Fill the Mentor info</h5>
                                                 </div>
                                             </div>
-                                            <div class="panel-body">
-                                                <?php if($msg){?>
-                                                <div class="alert alert-success left-icon-alert" role="alert">
-                                                <strong>Well done!</strong><?php echo htmlentities($msg); ?>
-                                                </div><?php } 
-                                                else if($error){?>
-                                                    <div class="alert alert-danger left-icon-alert" role="alert">
-                                                 <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                            </div>
-                                        <?php } ?>
-                                                <form class="form-horizontal" method="post">
-
-<div class="col-md-6">
-<label for="default" class="col-sm-2 control-label">Full Name</label>
-<div class="col-sm-10">
-<input type="text" name="name" class="form-control" id="name" required="required" autocomplete="off">
-</div>
-</div>
-
-
-<div class="form-group">
-<label for="default" class="col-sm-2 control-label">Email id</label>
-<div class="col-sm-10">
-<input type="email" name="email" class="form-control" id="email" required="required" autocomplete="off">
-</div>
-</div>
-
-<div class="form-group">
-<label for="default" class="col-sm-2 control-label">Password</label>
-<div class="col-sm-10">
-<input type="email" name="password" class="form-control" id="password" required="required" autocomplete="off">
-</div>
-</div>
-
-
-                                                    
-                                                    <div class="form-group">
-                                                        <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" name="submit" class="btn btn-primary">Add</button>
-                                                        </div>
+                                            <form class="form-horizontal" method="post">
+                                                <div class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Name</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="name" class="form-control" id="name" required="" autocomplete="off" value="<?php echo $rsedit['Name']; ?>">
                                                     </div>
-                                                </form>
-
-                                            </div>
+                                                </div><br><br>
+                                                <div class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Department</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="dept" class="form-control" id="dept" required="" autocomplete="off" value="<?php echo $rsedit['Department']; ?>">
+                                                    </div>
+                                                </div><br><br>
+                                                <div class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Designation</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="desig" class="form-control" id="desig" required="" autocomplete="off" value="<?php echo $rsedit['Designation']; ?>">
+                                                    </div>
+                                                </div><br><br>
+                                                <div class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Email ID</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="email" name="email" class="form-control" id="email" required="" autocomplete="off" value="<?php echo $rsedit['Email']; ?>">
+                                                    </div>
+                                                </div><br><br>
+                                                <div class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Password</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="email" name="password" class="form-control" id="password" required="" autocomplete="off" value="<?php echo $rsedit['Password']; ?>">
+                                                    </div>
+                                                </div><br><br>
+                                                <div  class="col-md-6">
+                                                    <label for="default" class="col-sm-2 control-label">Status</label>
+                                                    <div class="col-sm-10">
+                                                        <select name="status" id="status" class="form-control" value="<?php echo $rsedit['Status']; ?>">
+                                                        <option value="">Select Status</option>
+                                                        <?php
+                                                        $arr = array("Active","Inactive");
+                                                        foreach($arr as $val)
+                                                        {
+                                                            if($val == $rsedit['status'])
+                                                            {
+                                                            echo "<option value='$val' selected>$val</option>";
+                                                            }
+                                                            else
+                                                            {
+                                                            echo "<option value='$val'>$val</option>";
+                                                            }
+                                                        }
+                                                        ?>
+                                                        </select>
+                                                    </div>
+                                                </div><br><br>
+                                                <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" name="submit" class="btn btn-primary" style="position:relative,height: 100px">Add Mentor</button>
+                                                        </div>
+                                                    </div>     
+                                            </form>
                                         </div>
                                     </div>
-                                    <!-- /.col-md-12 -->
                                 </div>
+                                    <!-- /.col-md-12 -->
+                        </div>
                     </div>
                 </div>
                 <!-- /.content-container -->
@@ -180,4 +177,3 @@ $error="Something went wrong. Please try again";
         </script>
     </body>
 </html>
-<?PHP } ?>

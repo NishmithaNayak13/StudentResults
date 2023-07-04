@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2023 at 10:29 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.0.19
+-- Generation Time: Jul 04, 2023 at 07:38 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,7 @@ CREATE TABLE `admin` (
   `UserName` varchar(100) NOT NULL,
   `Password` varchar(100) NOT NULL,
   `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
@@ -49,8 +49,20 @@ INSERT INTO `admin` (`id`, `UserName`, `Password`, `updationDate`) VALUES
 
 CREATE TABLE `mentors` (
   `MentorId` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Name` varchar(50) NOT NULL,
+  `Department` varchar(50) NOT NULL,
+  `Designation` varchar(50) NOT NULL,
+  `Email` varchar(20) NOT NULL,
+  `Password` varchar(30) NOT NULL,
+  `Status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mentors`
+--
+
+INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`, `Password`, `Status`) VALUES
+(1, 'Nishmitha Nayak', 'MCA', 'Associate Professor', '4nm21mc061@nmamit.in', 'Nishmitha@123', 'Active');
 
 -- --------------------------------------------------------
 
@@ -60,6 +72,8 @@ CREATE TABLE `mentors` (
 
 CREATE TABLE `results` (
   `stdid` int(11) NOT NULL,
+  `usn` varchar(20) NOT NULL,
+  `subject` varchar(20) NOT NULL,
   `MSE1` int(5) NOT NULL,
   `MSE2` int(5) NOT NULL,
   `Task1` int(5) NOT NULL,
@@ -68,7 +82,7 @@ CREATE TABLE `results` (
   `SEE` int(5) NOT NULL,
   `SGPA` decimal(5,0) NOT NULL,
   `CGPA` decimal(5,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -82,7 +96,7 @@ CREATE TABLE `tblclasses` (
   `Semester` varchar(80) DEFAULT NULL,
   `ClassNameNumeric` int(4) NOT NULL,
   `Section` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -98,7 +112,7 @@ CREATE TABLE `tblresult` (
   `marks` int(11) DEFAULT NULL,
   `PostingDate` timestamp NULL DEFAULT current_timestamp(),
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -112,7 +126,7 @@ CREATE TABLE `tblstudents` (
   `Usn` varchar(100) NOT NULL,
   `ClassId` int(11) NOT NULL,
   `Status` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -124,7 +138,7 @@ CREATE TABLE `tblsubjectcombination` (
   `id` int(11) NOT NULL,
   `Semester` int(11) NOT NULL,
   `SubjectId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -137,7 +151,7 @@ CREATE TABLE `tblsubjects` (
   `Semester` int(2) NOT NULL,
   `SubjectName` varchar(100) NOT NULL,
   `SubjectCode` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Indexes for dumped tables
@@ -159,7 +173,8 @@ ALTER TABLE `mentors`
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
-  ADD PRIMARY KEY (`stdid`);
+  ADD PRIMARY KEY (`stdid`),
+  ADD UNIQUE KEY `usn` (`usn`);
 
 --
 -- Indexes for table `tblclasses`
@@ -205,7 +220,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `mentors`
 --
 ALTER TABLE `mentors`
-  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `results`

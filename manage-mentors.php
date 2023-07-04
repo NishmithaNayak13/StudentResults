@@ -1,13 +1,31 @@
-
 <?php
-session_start();
-error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
+//Approve or Suspend Staff Account starts here
+if(isset($_GET['acid']))
+{
+	$sqlas ="UPDATE mentors SET Status='$_GET[st]' WHERE Email='$_GET[acid]'";
+	$qsqlas = mysqli_query($dbh,$sqlas);
+	echo mysqli_error($dbh);
+	if(mysqli_affected_rows($dbh) == 1)
+	{
+		echo "<script>alert('Mentor account status updated to $_GET[st]');</script>";
+		echo "<script>window.location='manage-mentors.php';</script>";
+	}
+}
+if(isset($_GET['delid']))
+{
+	$sqldel ="DELETE FROM mentors where Email='$_GET[delid]'";
+	$qsqldel = mysqli_query($dbh,$sqldel);
+	if(mysqli_affected_rows($dbh) == 1)
+	{
+		echo "<script>alert('Mentor Record deleted successfully..');</script>";
+		echo "<script>window.location='manage-mentors.php';</script>";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,24 +110,17 @@ if(strlen($_SESSION['alogin'])=="")
                                                     <h5>View Mentors Info</h5>
                                                 </div>
                                             </div>
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                        </div>
-                                        <?php } ?>
                                             <div class="panel-body p-20">
 
                                                 <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>Mentor Name</th>
+                                                            <th>Name</th>
+                                                            <th>Department</th>
+                                                            <th>Designation</th>
                                                             <th>Email</th>
-                                                            <th>DOB</th>
+                                                            <th>Status</th>
                                                            <!-- <th>Creation Date</th>-->
                                                             <th>Action</th>
                                                         </tr>
@@ -125,29 +136,33 @@ else if($error){?>
                                                         </tr>
                                                     </tfoot>-->
                                                     <tbody>
-<?php $sql = "SELECT * from tblclasses";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<tr>
- <td><?php echo htmlentities($cnt);?></td>
-                                                            <td><?php echo htmlentities($result->ClassName);?></td>
-                                                            <td><?php echo htmlentities($result->ClassNameNumeric);?></td>
-                                                            <td><?php echo htmlentities($result->Section);?></td>
-                                                           <!-- <td><?php echo htmlentities($result->CreationDate);?></td>-->
-<td>
-<a href="edit-class.php?classid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
-
-</td>
-</tr>
-<?php $cnt=$cnt+1;}} ?>
-                                                       
-                                                    
+                                                    <?php 
+                                                    $sqlview = "SELECT * from mentors";
+                                                    $qsqlview = mysqli_query($dbh,$sqlview);
+                                                    while($rsview = mysqli_fetch_array($qsqlview))
+                                                    {
+                                                        echo "<tr>
+                                                            <td>$rsview[MentorId]</td>
+                                                            <td>$rsview[Name]</td>
+                                                            <td>$rsview[Department]</td>
+                                                            <td>$rsview[Designation]</td>
+                                                            <td>$rsview[Email]</td>
+                                                            <td>$rsview[Status] <br>";
+                                                            if($rsview['Status'] == "Active")
+                                                            {
+                                                                echo "<a href='manage-mentors.php?st=Inactive&acid=$rsview[Email]' class='btn btn-danger' onclick='return confirmst()' >Inactive</a>";
+                                                            }
+                                                            else
+                                                            {
+                                                                echo "<a href='manage-mentors.php?st=Active&acid=$rsview[Email]' class='btn btn-primary' onclick='return confirmst()'  >Approve</a>";
+                                                            }
+                                                            echo"</td>
+                                                                            <td>
+                                                                            <a href='add-mentors.php?editid=$rsview[Email]' class='btn btn-info'>Edit</a>
+                                                                            <a href='manage-mentors.php?delid=$rsview[Email]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
+                                                                        </td></tr>";
+                                                                    }
+                                                    ?>
                                                     </tbody>
                                                 </table>
 
@@ -214,7 +229,19 @@ foreach($results as $result)
                 $('#example3').DataTable();
             });
         </script>
+        <script>
+function confirmdel()
+{
+	if(confirm("Are you sure want to delete this record?") == true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+</script>
     </body>
 </html>
-<?php } ?>
 
