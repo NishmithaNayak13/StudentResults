@@ -1,33 +1,23 @@
 <?php
-session_start();
-error_reporting(0);
+
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
 if(isset($_POST['submit']))
 {
-$class=$_POST['class'];
-$subject=$_POST['subject']; 
+ 
 $status=1;
-$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,status) VALUES(:class,:subject,:status)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':class',$class,PDO::PARAM_STR);
-$query->bindParam(':subject',$subject,PDO::PARAM_STR);
-$query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Combination added successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-
+Semester,SubjectName,SubjectCode
+$sql="INSERT INTO  tblsubjectcombination(Semester,SubjectName,SubjectCode,status) VALUES('$_POST[semester],'$_POST[subjectname]','$_POST[subjectcode]','$_POST[status]')";
+$qsql = mysqli_query($dbh,$sql);
+echo mysqli_error($dbh);
+    if(mysqli_affected_rows($dbh)==1)
+    {
+        echo "<script>alert('Subject combination successfully...');</script>";
+        echo "<script>window.location='dashboard.php';</script>";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -36,7 +26,7 @@ $error="Something went wrong. Please try again";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SRMS Admin Subject Combination< </title>
+        <title>Subject Combination< </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -49,15 +39,15 @@ $error="Something went wrong. Please try again";
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
 
-            <!-- ========== TOP NAVBAR ========== -->
+          
   <?php include('includes/topbar.php');?> 
             <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
             <div class="content-wrapper">
                 <div class="content-container">
 
-                    <!-- ========== LEFT SIDEBAR ========== -->
+                    
                    <?php include('includes/leftbar.php');?>  
-                    <!-- /.left-sidebar -->
+                   
 
                     <div class="main-page">
 
@@ -94,15 +84,7 @@ $error="Something went wrong. Please try again";
                                                 </div>
                                             </div>
                                             <div class="panel-body">
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                        </div>
-                                        <?php } ?>
+
                                                 <form class="form-horizontal" method="post">
                                                     <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Class</label>
@@ -183,4 +165,4 @@ foreach($results as $result)
         </script>
     </body>
 </html>
-<?PHP } ?>
+

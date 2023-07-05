@@ -1,36 +1,30 @@
 <?php
-session_start();
-error_reporting(0);
+#session_start();
+#error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
-if(isset($_POST['submit']))
+if(isset($_SESSION['UserName']))
 {
-$batch=$_POST['batch'];
-$semester=$_POST['semester'];
-$classnamenumeric=$_POST['classnamenumeric']; 
-$section=$_POST['section'];
-$sql="INSERT INTO  tblclasses(batch,semester,ClassNameNumeric,Section) VALUES(:batch,:semester,:classnamenumeric,:section)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':batch',$batch,PDO::PARAM_STR);
-$query->bindParam(':semester',$semester,PDO::PARAM_STR);
-$query->bindParam(':classnamenumeric',$classnamenumeric,PDO::PARAM_STR);
-$query->bindParam(':section',$section,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Class Created successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
+	echo "<script>window.location='index.php';</script>";
 }
 
+#if(strlen($_SESSION['alogin'])=="")
+ #   {   
+  #  header("Location: index.php"); 
+   # }
+#else{
+if(isset($_POST['submit']))
+{
+    $sql="INSERT INTO  tblclasses(Batch,Semester,Section) VALUES('$_POST[batch]','$_POST[semester]','$_POST[section]')";
+    $qsql = mysqli_query($dbh,$sql);
+    echo mysqli_error($dbh);
+    if(mysqli_affected_rows($dbh)==1)
+        {
+            echo "<script>alert('Class created successfully...');</script>";
+            echo "<script>window.location='dashboard.php';</script>";
+        }
 }
+   
+#}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,21 +42,21 @@ $error="Something went wrong. Please try again";
         <script src="js/modernizr/modernizr.min.js"></script>
          <style>
         .errorWrap {
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #dd3d36;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
-.succWrap{
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #5cb85c;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
+                    padding: 10px;
+                    margin: 0 0 20px 0;
+                    background: #fff;
+                    border-left: 4px solid #dd3d36;
+                    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                    }
+        .succWrap{
+                  padding: 10px;
+                  margin: 0 0 20px 0;
+                  background: #fff;
+                  border-left: 4px solid #5cb85c;
+                  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                }
         </style>
     </head>
     <body class="top-navbar-fixed">
@@ -75,10 +69,9 @@ $error="Something went wrong. Please try again";
             <div class="content-wrapper">
                 <div class="content-container">
 
-<!-- ========== LEFT SIDEBAR ========== -->
-<?php include('includes/leftbar.php');?>                   
- <!-- /.left-sidebar -->
-
+            <!-- ========== LEFT SIDEBAR ========== -->
+            <?php include('includes/leftbar.php');?>                   
+            <!-- /.left-sidebar -->
                     <div class="main-page">
                         <div class="container-fluid">
                             <div class="row page-title-div">
@@ -103,95 +96,58 @@ $error="Something went wrong. Please try again";
                         <!-- /.container-fluid -->
 
                         <section class="section">
-                            <div class="container-fluid">
-
-                             
-
-                              
-
-                                <div class="row">
-                                    <div class="col-md-8 col-md-offset-2">
-                                        <div class="panel">
-                                            <div class="panel-heading">
-                                                <div class="panel-title">
-                                                    <h5>Create Student Class</h5>
-                                                </div>
+                        <div class="container-fluid">
+                             <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <h5>Create Student Class</h5>
                                             </div>
-           <?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
                                         </div>
-                                        <?php } ?>
-  
+    
                                             <div class="panel-body">
-
                                                 <form method="post">
                                                     <div class="form-group has-success">
                                                         <label for="success" class="control-label">Batch</label>
                                                 		<div class="">
-                                                			<input type="text" name="batch" class="form-control" required="required" id="success">
-                                                            <!--<span class="help-block">Eg- Third, Fouth,Sixth etc</span>-->
+                                                			<input type="text" name="batch" class="form-control" required="required" id="batch">                                                           
                                                 		</div>
                                                 	</div>
                                                     <div class="form-group has-success">
                                                         <label for="success" class="control-label">Semester</label>
                                                 		<div class="">
-                                                			<input type="text" name="semester" class="form-control" required="required" id="success">
-                                                            <!--<span class="help-block">Eg- Third, Fouth,Sixth etc</span>-->
+                                                			<input type="text" name="semester" class="form-control" required="required" id="semester">                                                           
                                                 		</div>
                                                 	</div>
-                                                       <div class="form-group has-success">
-                                                        <label for="success" class="control-label">Class Name in Numeric</label>
-                                                        <div class="">
-                                                            <input type="number" name="classnamenumeric" required="required" class="form-control" id="success">
-                                                            <!--<span class="help-block">Eg- 1,2,4,5 etc</span>-->
-                                                        </div>
-                                                    </div>
-                                                     <div class="form-group has-success">
+                                                    
+                                                    <div class="form-group has-success">
                                                         <label for="success" class="control-label">Section</label>
                                                         <div class="">
-                                                            <input type="text" name="section" class="form-control" required="required" id="success">
-                                                           <!-- <span class="help-block">Eg- A,B,C etc</span>-->
+                                                            <input type="text" name="section" class="form-control" required="required" id="section">
                                                         </div>
                                                     </div>
-                                                        <div class="form-group has-success">
-
+                                                    <div class="form-group has-success">
                                                         <div class="">
                                                            <button type="submit" name="submit" class="btn btn-success btn-labeled">Submit<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>
-                                                    </div>
-
-
-                                                    
+                                                        </div>
+                                                    </div>  
                                                 </form>
-
-                                              
                                             </div>
                                         </div>
                                     </div>
                                     <!-- /.col-md-8 col-md-offset-2 -->
                                 </div>
                                 <!-- /.row -->
-
-                               
-                               
-
                             </div>
                             <!-- /.container-fluid -->
-                        </section>
-                        <!-- /.section -->
-
+                        </section>              
                     </div>
                     <!-- /.main-page -->
-
                 </div>
                 <!-- /.content-container -->
             </div>
             <!-- /.content-wrapper -->
-
         </div>
         <!-- /.main-wrapper -->
 
@@ -208,10 +164,7 @@ else if($error){?>
 
         <!-- ========== THEME JS ========== -->
         <script src="js/main.js"></script>
-
-
-
-        <!-- ========== ADD custom.js FILE BELOW WITH YOUR CHANGES ========== -->
     </body>
 </html>
-<?php  } ?>
+
+

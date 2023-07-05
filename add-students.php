@@ -1,6 +1,4 @@
 <?php
-session_start();
-error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])=="")
     {   
@@ -9,9 +7,9 @@ if(strlen($_SESSION['alogin'])=="")
     else{
 if(isset($_POST['submit']))
 {
-$studentname=$_POST['fullanme'];
-$roolid=$_POST['rollid']; 
-$studentemail=$_POST['emailid']; 
+$studentname=$_POST['name'];
+$usn=$_POST['usn']; 
+$batch=$_POST['batch']; 
 $gender=$_POST['gender']; 
 $classid=$_POST['class']; 
 $dob=$_POST['dob']; 

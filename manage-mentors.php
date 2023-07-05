@@ -120,21 +120,11 @@ if(isset($_GET['delid']))
                                                             <th>Department</th>
                                                             <th>Designation</th>
                                                             <th>Email</th>
-                                                            <th>Status</th>
-                                                           <!-- <th>Creation Date</th>-->
+                                                            <th>Status</th>                                                         
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
-                                                  <!--  <tfoot>
-                                                        <tr>
-                                                          <th>#</th>
-                                                            <th>Class Name</th>
-                                                            <th>Class Name Numeric</th>
-                                                            <th>Section</th>
-                                                            <th>Creation Date</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </tfoot>-->
+                                               
                                                     <tbody>
                                                     <?php 
                                                     $sqlview = "SELECT * from mentors";
