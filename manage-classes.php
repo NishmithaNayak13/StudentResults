@@ -1,11 +1,9 @@
 <?php
-
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

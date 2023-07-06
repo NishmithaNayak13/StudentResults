@@ -25,7 +25,6 @@
                                         <ul class="child-nav">
                                             <li><a href="add-mentors.php"><i class="fa fa-bars"></i> <span>Add Mentors</span></a></li>
                                             <li><a href="manage-mentors.php"><i class="fa fa fa-server"></i> <span>Manage Mentors</span></a></li>
-                                           
                                         </ul>
                                     </li>
                                     <li class="has-children">

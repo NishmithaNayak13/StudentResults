@@ -6,35 +6,14 @@ if(isset($_SESSION['UserName']))
 }
 if(isset($_POST['submit']))
 {
-    if(isset($_GET['editid']))
+    $sql = "INSERT INTO mentors(Name,Department,Designation,Email,Password,Status) VALUES('$_POST[name]','$_POST[dept]','$_POST[desig]','$_POST[email]','$_POST[password]','$_POST[status]')";
+    $qsql = mysqli_query($dbh,$sql);
+    echo mysqli_error($dbh);
+    if(mysqli_affected_rows($dbh)==1)
     {
-        $sql = "UPDATE mentors SET Name='$_POST[name]', Department='$_POST[dept]', Designation='$_POST[desig]', Email='$_POST[email]', Password='$_POST[password]', Status='$_POST[status]' WHERE Email='$_GET[editid]'";
-        $qsql = mysqli_query($dbh,$sql);
-        echo mysqli_error($dbh);
-        if(mysqli_affected_rows($dbh) == 1)
-        {
-            echo "<script>alert('Mentor Record Updated Successfully..');</script>";
-			echo "<script>window.location='manage-mentors.php';</script>";
-
-        }
+        echo "<script>alert('Registered successfully...');</script>";
+        echo "<script>window.location='dashboard.php';</script>";
     }
-    else
-    {
-        $sql = "INSERT INTO mentors(Name,Department,Designation,Email,Password,Status) VALUES('$_POST[name]','$_POST[dept]','$_POST[desig]','$_POST[email]','$_POST[password]','$_POST[status]')";
-        $qsql = mysqli_query($dbh,$sql);
-        echo mysqli_error($dbh);
-        if(mysqli_affected_rows($dbh)==1)
-        {
-            echo "<script>alert('Registered successfully...');</script>";
-            echo "<script>window.location='dashboard.php';</script>";
-        }
-    }
-}
-if(isset($_GET['editid']))
-{
-	$sqledit= "SELECT * FROM mentors where Email='$_GET[editid]'";
-	$qsqledit = mysqli_query($dbh,$sqledit);
-	$rsedit = mysqli_fetch_array($qsqledit);
 }
 ?>
 <!DOCTYPE html>
@@ -89,37 +68,37 @@ if(isset($_GET['editid']))
                                                 <div class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Name</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" name="name" class="form-control" id="name" required="" autocomplete="off" value="<?php echo $rsedit['Name']; ?>">
+                                                        <input type="text" name="name" class="form-control" id="name" required="" autocomplete="off">
                                                     </div>
                                                 </div><br><br>
                                                 <div class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Department</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" name="dept" class="form-control" id="dept" required="" autocomplete="off" value="<?php echo $rsedit['Department']; ?>">
+                                                        <input type="text" name="dept" class="form-control" id="dept" required="" autocomplete="off">
                                                     </div>
                                                 </div><br><br>
                                                 <div class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Designation</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" name="desig" class="form-control" id="desig" required="" autocomplete="off" value="<?php echo $rsedit['Designation']; ?>">
+                                                        <input type="text" name="desig" class="form-control" id="desig" required="" autocomplete="off">
                                                     </div>
                                                 </div><br><br>
                                                 <div class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Email ID</label>
                                                     <div class="col-sm-10">
-                                                        <input type="email" name="email" class="form-control" id="email" required="" autocomplete="off" value="<?php echo $rsedit['Email']; ?>">
+                                                        <input type="email" name="email" class="form-control" id="email" required="" autocomplete="off">
                                                     </div>
                                                 </div><br><br>
                                                 <div class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Password</label>
                                                     <div class="col-sm-10">
-                                                        <input type="email" name="password" class="form-control" id="password" required="" autocomplete="off" value="<?php echo $rsedit['Password']; ?>">
+                                                        <input type="email" name="password" class="form-control" id="password" required="" autocomplete="off">
                                                     </div>
                                                 </div><br><br>
                                                 <div  class="col-md-6">
                                                     <label for="default" class="col-sm-2 control-label">Status</label>
                                                     <div class="col-sm-10">
-                                                        <select name="status" id="status" class="form-control" value="<?php echo $rsedit['Status']; ?>">
+                                                        <select name="status" id="status" class="form-control">
                                                         <option value="">Select Status</option>
                                                         <?php
                                                         $arr = array("Active","Inactive");
