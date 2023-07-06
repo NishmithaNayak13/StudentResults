@@ -41,7 +41,7 @@ if(isset($_GET['editid']))
 <html lang="en">
     <head>
         
-        <title>Mentor </title>
+        <title>Update Mentor</title>
         
     </head>
     <body class="top-navbar-fixed">
