@@ -29,12 +29,12 @@ $msg="Data has been updated successfully";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin Update Class</title>
+        <title>Update Class</title>
         <link rel="stylesheet" href="css/bootstrap.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
         <link rel="stylesheet" href="css/lobipanel/lobipanel.min.css" media="screen" >
-        <link rel="stylesheet" href="css/prism/prism.css" media="screen" > <!-- USED FOR DEMO HELP - YOU CAN REMOVE IT -->
+        
         <link rel="stylesheet" href="css/main.css" media="screen" >
         <script src="js/modernizr/modernizr.min.js"></script>
     </head>
@@ -90,15 +90,7 @@ $msg="Data has been updated successfully";
                                                     <h5>Update Student Class info</h5>
                                                 </div>
                                             </div>
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                        </div>
-                                        <?php } ?>
+
 
                                                 <form method="post">
 <?php 
@@ -189,10 +181,6 @@ foreach($results as $result)
 
         <!-- ========== THEME JS ========== -->
         <script src="js/main.js"></script>
-
-
-
-        <!-- ========== ADD custom.js FILE BELOW WITH YOUR CHANGES ========== -->
     </body>
 </html>
 <?php  } ?>
