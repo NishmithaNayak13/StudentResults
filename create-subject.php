@@ -1,20 +1,33 @@
 <?php
-
+session_start();
+error_reporting(0);
 include('includes/config.php');
-if(isset($_SESSION['UserName']))
-{
-	echo "<script>window.location='index.php';</script>";
-}
+if(strlen($_SESSION['alogin'])=="")
+    {   
+    header("Location: index.php"); 
+    }
+    else{
 if(isset($_POST['submit']))
 {
-    $sql="INSERT INTO  tblsubjects(Semester,SubjectName,SubjectCode) VALUES('$_POST[semester]','$_POST[subjectname]','$_POST[subjectcode]')";
-    $qsql = mysqli_query($dbh,$sql);
-    echo mysqli_error($dbh);
-    if(mysqli_affected_rows($dbh)==1)
-    {
-        echo "<script>alert('Subject created successfully...');</script>";
-        echo "<script>window.location='dashboard.php';</script>";
-    }
+$semester=$_POST['semester'];
+$subjectname=$_POST['subjectname'];
+$subjectcode=$_POST['subjectcode']; 
+$sql="INSERT INTO  tblsubjects(Semester,SubjectName,SubjectCode) VALUES(:semester,:subjectname,:subjectcode)";
+$query = $dbh->prepare($sql);
+$query->bindParam(':semester',$semester,PDO::PARAM_STR);
+$query->bindParam(':subjectname',$subjectname,PDO::PARAM_STR);
+$query->bindParam(':subjectcode',$subjectcode,PDO::PARAM_STR);
+$query->execute();
+$lastInsertId = $dbh->lastInsertId();
+if($lastInsertId)
+{
+$msg="Subject Created successfully";
+}
+else 
+{
+$error="Something went wrong. Please try again";
+}
+
 }
 ?>
 <!DOCTYPE html>
@@ -35,14 +48,16 @@ if(isset($_POST['submit']))
     </head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
+
+            <!-- ========== TOP NAVBAR ========== -->
   <?php include('includes/topbar.php');?> 
-            
+            <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
             <div class="content-wrapper">
                 <div class="content-container">
 
-                    
+                    <!-- ========== LEFT SIDEBAR ========== -->
                    <?php include('includes/leftbar.php');?>  
-                  
+                    <!-- /.left-sidebar -->
 
                     <div class="main-page">
 
@@ -53,9 +68,9 @@ if(isset($_POST['submit']))
                                 
                                 </div>
                                 
-                               
+                                <!-- /.col-md-6 text-right -->
                             </div>
-                            
+                            <!-- /.row -->
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
@@ -66,7 +81,7 @@ if(isset($_POST['submit']))
                                 </div>
                              
                             </div>
-                           
+                            <!-- /.row -->
                         </div>
                         <div class="container-fluid">
                            
@@ -79,7 +94,15 @@ if(isset($_POST['submit']))
                                                 </div>
                                             </div>
                                             <div class="panel-body">
-
+<?php if($msg){?>
+<div class="alert alert-success left-icon-alert" role="alert">
+ <strong>Well done!</strong><?php echo htmlentities($msg); ?>
+ </div><?php } 
+else if($error){?>
+    <div class="alert alert-danger left-icon-alert" role="alert">
+                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+                                        </div>
+                                        <?php } ?>
                                                 <form class="form-horizontal" method="post">
                                                 <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Semester</label>
@@ -142,3 +165,4 @@ if(isset($_POST['submit']))
         </script>
     </body>
 </html>
+<?PHP } ?>

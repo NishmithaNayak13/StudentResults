@@ -1,12 +1,13 @@
 
 <?php
-
+session_start();
+error_reporting(0);
 include('includes/config.php');
-include('includes/config.php');
-if(isset($_SESSION['UserName']))
-{
-	echo "<script>window.location='index.php';</script>";
-}
+if(strlen($_SESSION['alogin'])=="")
+    {   
+    header("Location: index.php"); 
+    }
+    else{
  // for activate Subject   	
 if(isset($_GET['acid']))
 {
@@ -39,11 +40,12 @@ $msg="Subject Deactivate successfully";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Manage Subjects Combination</title>
+        <title>SRMS Admin Manage Subjects Combination</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
         <link rel="stylesheet" href="css/lobipanel/lobipanel.min.css" media="screen" >
+        <link rel="stylesheet" href="css/prism/prism.css" media="screen" > <!-- USED FOR DEMO HELP - YOU CAN REMOVE IT -->
         <link rel="stylesheet" type="text/css" href="js/DataTables/datatables.min.css"/>
         <link rel="stylesheet" href="css/main.css" media="screen" >
         <script src="js/modernizr/modernizr.min.js"></script>
@@ -64,21 +66,29 @@ $msg="Subject Deactivate successfully";
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
 }
-    </style>
+        </style>
     </head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
-            <?php include('includes/topbar.php');?> 
+
+            <!-- ========== TOP NAVBAR ========== -->
+   <?php include('includes/topbar.php');?> 
+            <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
             <div class="content-wrapper">
                 <div class="content-container">
-                <?php include('includes/leftbar.php');?>  
+<?php include('includes/leftbar.php');?>  
+
                     <div class="main-page">
                         <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
                                     <h2 class="title">Manage Subjects Combination</h2>
+                                
                                 </div>
+                                
+                                <!-- /.col-md-6 text-right -->
                             </div>
+                            <!-- /.row -->
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
@@ -87,31 +97,58 @@ $msg="Subject Deactivate successfully";
             							<li class="active">Manage Subjects Combination</li>
             						</ul>
                                 </div>
+                             
                             </div>
+                            <!-- /.row -->
                         </div>
+                        <!-- /.container-fluid -->
+
                         <section class="section">
                             <div class="container-fluid">
+
+                             
+
                                 <div class="row">
                                     <div class="col-md-12">
+
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
                                                     <h5>View Subjects Combination Info</h5>
                                                 </div>
                                             </div>
+<?php if($msg){?>
+<div class="alert alert-success left-icon-alert" role="alert">
+ <strong>Well done!</strong><?php echo htmlentities($msg); ?>
+ </div><?php } 
+else if($error){?>
+    <div class="alert alert-danger left-icon-alert" role="alert">
+                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+                                        </div>
+                                        <?php } ?>
                                             <div class="panel-body p-20">
+
                                                 <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>Batch and Section</th>
+                                                            <th>Class and Section</th>
                                                             <th>Subject </th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
+                                                    <tfoot>
+                                                        <tr>
+                                                          <th>#</th>
+                                                            <th>Class and Section</th>
+                                                            <th>Subject </th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT tblclasses.id,tblclasses.Batch,tblsubjects.Semester,tblclasses.Section,tblsubjectcombination.id as scid,tblsubjectcombination.status from tblsubjectcombination join tblclasses on tblclasses.id=tblsubjectcombination.ClassId  join tblsubjects on tblsubjects.id=tblsubjectcombination.SubjectId";
+<?php $sql = "SELECT tblclasses.ClassName,tblclasses.Section,tblsubjects.SubjectName,tblsubjectcombination.id as scid,tblsubjectcombination.status from tblsubjectcombination join tblclasses on tblclasses.id=tblsubjectcombination.ClassId  join tblsubjects on tblsubjects.id=tblsubjectcombination.SubjectId";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -208,3 +245,5 @@ else
         </script>
     </body>
 </html>
+<?php } ?>
+

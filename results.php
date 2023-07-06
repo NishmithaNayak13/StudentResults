@@ -1,6 +1,6 @@
 <?php
-#session_start();
-#error_reporting(0);
+session_start();
+error_reporting(0);
 include('includes/config.php');
 if(strlen($_SESSION['alogin'])=="")
     {   
@@ -22,7 +22,7 @@ $cie=$_POST['cie'];
 $see=$_POST['see'];
 $sgpa=$_POST['sgpa'];
 $cgpa=$_POST['cgpa'];
-# Name-mentors....Batch,usn,name-tblstudents....Semester,SubjectName-tblsubjects
+
  $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
  $stmt->execute(array(':cid' => $class));
   $sid1=array();
@@ -36,7 +36,7 @@ for($i=0;$i<count($mark);$i++){
     $mar=$mark[$i];
   $sid=$sid1[$i];
 
-$sql="INSERT INTO  result(USN,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE,SGPA,CGPA) VALUES(:usn,:subject,:mse1,:mse2,:task1,:task2,:cie,:see,:sgpa,:cgpa)";
+$sql="INSERT INTO  result(usn,subject,MSE1,MSE2,Task1,Task2,CIE,SEE,SGPA,CGPA) VALUES(:usn,:subject,:mse1,:mse2,:task1,:task2,:cie,:see,:sgpa,:cgpa)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':usn',$usn,PDO::PARAM_STR);
 $query->bindParam(':subject',$subject,PDO::PARAM_STR);

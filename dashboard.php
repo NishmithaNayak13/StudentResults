@@ -4,13 +4,9 @@ if(isset($_SESSION['UserName']))
 	echo "<script>window.location='index.php';</script>";
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">    
-    <head>
-        <title>Dashboard</title>
-        
-    </head>
+<head>
+    <title>Dashboard</title>
+</head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
               <?php include('includes/topbar.php');?>
