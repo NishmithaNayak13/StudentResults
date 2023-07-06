@@ -1,24 +1,29 @@
 <?php
-session_start();
-error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
-if(isset($_POST['Update']))
+if(isset($_SESSION['UserName']))
 {
-$sid=intval($_GET['subjectid']);
-$subjectname=$_POST['subjectname'];
-$subjectcode=$_POST['subjectcode']; 
-$sql="update  tblsubjects set SubjectName=:subjectname,SubjectCode=:subjectcode where id=:sid";
-$query = $dbh->prepare($sql);
-$query->bindParam(':subjectname',$subjectname,PDO::PARAM_STR);
-$query->bindParam(':subjectcode',$subjectcode,PDO::PARAM_STR);
-$query->bindParam(':sid',$sid,PDO::PARAM_STR);
-$query->execute();
-$msg="Subject Info updated successfully";
+	echo "<script>window.location='index.php';</script>";
+}
+if(isset($_POST['submit']))
+{
+    if(isset($_GET['editid']))
+    {
+        $sql = "UPDATE tblsubjects SET Semester='$_POST[semester]', SubjectName='$_POST[subjectname]', SubjectCode='$_POST[subjectcode]' WHERE SubjectCode='$_GET[editid]'";
+        $qsql = mysqli_query($dbh,$sql);
+        echo mysqli_error($dbh);
+        if(mysqli_affected_rows($dbh) == 1)
+        {
+            echo "<script>alert('Subject Record Updated Successfully..');</script>";
+			echo "<script>window.location='manage-subjects.php';</script>";
+
+        }
+    }
+}
+if(isset($_GET['editid']))
+{
+	$sqledit= "SELECT * FROM tblsubjects where SubjectCode='$_GET[editid]'";
+	$qsqledit = mysqli_query($dbh,$sqledit);
+	$rsedit = mysqli_fetch_array($qsqledit);
 }
 ?>
 <!DOCTYPE html>
@@ -27,7 +32,7 @@ $msg="Subject Info updated successfully";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin Update Subject </title>
+        <title>Subject Creation </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -39,16 +44,14 @@ $msg="Subject Info updated successfully";
     </head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
-
-            <!-- ========== TOP NAVBAR ========== -->
   <?php include('includes/topbar.php');?> 
-            <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
+            
             <div class="content-wrapper">
                 <div class="content-container">
 
-                    <!-- ========== LEFT SIDEBAR ========== -->
+                    
                    <?php include('includes/leftbar.php');?>  
-                    <!-- /.left-sidebar -->
+                  
 
                     <div class="main-page">
 
@@ -56,12 +59,9 @@ $msg="Subject Info updated successfully";
                             <div class="row page-title-div">
                                 <div class="col-md-6">
                                     <h2 class="title">Update Subject</h2>
-                                
                                 </div>
-                                
-                                <!-- /.col-md-6 text-right -->
                             </div>
-                            <!-- /.row -->
+                            
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
@@ -70,12 +70,9 @@ $msg="Subject Info updated successfully";
                                         <li class="active">Update Subject</li>
                                     </ul>
                                 </div>
-                             
                             </div>
-                            <!-- /.row -->
                         </div>
                         <div class="container-fluid">
-                           
                         <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel">
@@ -85,47 +82,29 @@ $msg="Subject Info updated successfully";
                                                 </div>
                                             </div>
                                             <div class="panel-body">
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                        </div>
-                                        <?php } ?>
+
                                                 <form class="form-horizontal" method="post">
-
- <?php
-$sid=intval($_GET['subjectid']);
-$sql = "SELECT * from tblsubjects where id=:sid";
-$query = $dbh->prepare($sql);
-$query->bindParam(':sid',$sid,PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>                                               
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Subject Name</label>
+                                                <div class="col-md-6">
+                                                        <label for="default" class="col-sm-2 control-label">Semester</label>
                                                         <div class="col-sm-10">
- <input type="text" name="subjectname" value="<?php echo htmlentities($result->SubjectName);?>" class="form-control" id="default" placeholder="Subject Name" required="required">
+                                                            <input type="text" name="semester" class="form-control" id="default" placeholder="Semester" required="required" value="<?php echo $rsedit['Semester']; ?>">
                                                         </div>
-                                                    </div>
-<div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Subject Code</label>
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
+                                                        <label for="default" class="col-sm-2 control-label">Name</label>
                                                         <div class="col-sm-10">
- <input type="text" name="subjectcode" class="form-control" value="<?php echo htmlentities($result->SubjectCode);?>"  id="default" placeholder="Subject Code" required="required">
+                                                            <input type="text" name="subjectname" class="form-control" id="default" placeholder="Subject Name" required="required" value="<?php echo $rsedit['SubjectName']; ?>">
                                                         </div>
-                                                    </div>
-                                                    <?php }} ?>
-
-                                                    
-                                                    <div class="form-group">
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
+                                                        <label for="default" class="col-sm-2 control-label">Code</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" name="subjectcode" class="form-control" id="default" placeholder="Subject Code" required="required" value="<?php echo $rsedit['SubjectCode']; ?>">
+                                                        </div>
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" name="Update" class="btn btn-primary">Update</button>
+                                                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -163,4 +142,3 @@ foreach($results as $result)
         </script>
     </body>
 </html>
-<?PHP } ?>

@@ -18,17 +18,6 @@ if(isset($_POST['submit']))
 
         }
     }
-    else
-    {
-        $sql = "INSERT INTO mentors(Name,Department,Designation,Email,Password,Status) VALUES('$_POST[name]','$_POST[dept]','$_POST[desig]','$_POST[email]','$_POST[password]','$_POST[status]')";
-        $qsql = mysqli_query($dbh,$sql);
-        echo mysqli_error($dbh);
-        if(mysqli_affected_rows($dbh)==1)
-        {
-            echo "<script>alert('Registered successfully...');</script>";
-            echo "<script>window.location='dashboard.php';</script>";
-        }
-    }
 }
 if(isset($_GET['editid']))
 {

@@ -1,10 +1,18 @@
-
 <?php
-
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
+}
+if(isset($_GET['delid']))
+{
+	$sqldel ="DELETE FROM tblsubjects where SubjectCode='$_GET[delid]'";
+	$qsqldel = mysqli_query($dbh,$sqldel);
+	if(mysqli_affected_rows($dbh) == 1)
+	{
+		echo "<script>alert('Subject Record Deleted Successfully..');</script>";
+		echo "<script>window.location='manage-subjects.php';</script>";
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -100,8 +108,8 @@ if(isset($_SESSION['UserName']))
                                                                         
                                                                         echo"</td>
                                                                                 <td>
-                                                                                    <a href='create-subject.php?editid=$rsview[Semester]' class='btn btn-info'>Edit</a>
-                                                                                    <a href='manage-subject.php?delid=$rsview[Semester]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
+                                                                                    <a href='edit-subject.php?editid=$rsview[SubjectCode]' class='btn btn-info'>Edit</a>
+                                                                                    <a href='manage-subjects.php?delid=$rsview[SubjectCode]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
                                                                                 </td>
                                                                             </tr>";
                                                                 }
@@ -145,6 +153,19 @@ if(isset($_SESSION['UserName']))
 
                 $('#example3').DataTable();
             });
+        </script>
+            <script>
+            function confirmdel()
+            {
+                if(confirm("Are you sure want to delete this record?") == true)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         </script>
     </body>
 </html>

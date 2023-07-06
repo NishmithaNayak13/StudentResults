@@ -4,6 +4,10 @@ if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='dashboard.php';</script>";
 }
+if(isset($_SESSION['Email']))
+{
+	echo "<script>window.location='dashboard.php';</script>";
+}
 if(isset($_POST['login']))
 {
     if(isset($_POST['username']))
@@ -18,6 +22,16 @@ if(isset($_POST['login']))
             $_SESSION['UserName'] = $rslogin['UserName'];
             echo "<script>window.location='dashboard.php';</script>";
         }
+        $password = $_POST['password'];
+		$sql = "SELECT * FROM mentors where Email='$_POST[username]' AND Password='$password' AND Status='Active'";
+		$qsql = mysqli_query($dbh,$sql);
+		echo mysqli_error($dbh);
+		if(mysqli_num_rows($qsql) == 1)
+		{
+			$rslogin = mysqli_fetch_array($qsql);
+			$_SESSION['Email'] = $rslogin['Email'];
+			echo "<script>window.location='dashboard.php';</script>";
+		}
         else
         {
             echo "<script>alert('Wrong Credentials. Please try again');</script>";

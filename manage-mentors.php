@@ -4,7 +4,7 @@ if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
-//Approve or Suspend Staff Account starts here
+//Approve or Suspend Mentor Account starts here
 if(isset($_GET['acid']))
 {
 	$sqlas ="UPDATE mentors SET Status='$_GET[st]' WHERE Email='$_GET[acid]'";
@@ -130,7 +130,7 @@ if(isset($_GET['delid']))
                                                                 }
                                                                 echo"</td>
                                                                         <td>
-                                                                            <a href='add-mentors.php?editid=$rsview[Email]' class='btn btn-info'>Edit</a>
+                                                                            <a href='edit-mentor.php?editid=$rsview[Email]' class='btn btn-info'>Edit</a>
                                                                             <a href='manage-mentors.php?delid=$rsview[Email]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
                                                                         </td>
                                                                     </tr>";

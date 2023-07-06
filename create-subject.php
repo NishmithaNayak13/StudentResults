@@ -1,5 +1,4 @@
 <?php
-
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
@@ -50,10 +49,7 @@ if(isset($_POST['submit']))
                             <div class="row page-title-div">
                                 <div class="col-md-6">
                                     <h2 class="title">Subject Creation</h2>
-                                
                                 </div>
-                                
-                               
                             </div>
                             
                             <div class="row breadcrumb-div">
@@ -64,12 +60,9 @@ if(isset($_POST['submit']))
                                         <li class="active">Create Subject</li>
                                     </ul>
                                 </div>
-                             
                             </div>
-                           
                         </div>
                         <div class="container-fluid">
-                           
                         <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel">
@@ -81,28 +74,25 @@ if(isset($_POST['submit']))
                                             <div class="panel-body">
 
                                                 <form class="form-horizontal" method="post">
-                                                <div class="form-group">
+                                                <div class="col-md-6">
                                                         <label for="default" class="col-sm-2 control-label">Semester</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" name="semester" class="form-control" id="default" placeholder="semester" required="required">
+                                                            <input type="text" name="semester" class="form-control" id="default" placeholder="Semester" required="required">
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Subject Name</label>
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
+                                                        <label for="default" class="col-sm-2 control-label">Name</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" name="subjectname" class="form-control" id="default" placeholder="Subject Name" required="required">
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Subject Code</label>
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
+                                                        <label for="default" class="col-sm-2 control-label">Code</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" name="subjectcode" class="form-control" id="default" placeholder="Subject Code" required="required">
                                                         </div>
-                                                    </div>
-                                                    
-
-                                                    
-                                                    <div class="form-group">
+                                                    </div><br><br>
+                                                    <div class="col-md-6">
                                                         <div class="col-sm-offset-2 col-sm-10">
                                                             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                                                         </div>

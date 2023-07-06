@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2023 at 07:38 PM
+-- Generation Time: Jul 06, 2023 at 04:50 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -62,7 +62,7 @@ CREATE TABLE `mentors` (
 --
 
 INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`, `Password`, `Status`) VALUES
-(1, 'Nishmitha Nayak', 'MCA', 'Associate Professor', '4nm21mc061@nmamit.in', 'Nishmitha@123', 'Active');
+(3, 'Nishmitha Nayak', 'MCA', 'Assistant Professor', '4nm21mc061@nmamit.in', 'Nishmitha@123', 'Active');
 
 -- --------------------------------------------------------
 
@@ -72,8 +72,8 @@ INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`,
 
 CREATE TABLE `results` (
   `stdid` int(11) NOT NULL,
-  `usn` varchar(20) NOT NULL,
-  `subject` varchar(20) NOT NULL,
+  `USN` varchar(20) NOT NULL,
+  `Subject` varchar(20) NOT NULL,
   `MSE1` int(5) NOT NULL,
   `MSE2` int(5) NOT NULL,
   `Task1` int(5) NOT NULL,
@@ -94,9 +94,17 @@ CREATE TABLE `tblclasses` (
   `id` int(11) NOT NULL,
   `Batch` int(4) NOT NULL,
   `Semester` varchar(80) DEFAULT NULL,
-  `ClassNameNumeric` int(4) NOT NULL,
   `Section` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblclasses`
+--
+
+INSERT INTO `tblclasses` (`id`, `Batch`, `Semester`, `Section`) VALUES
+(1, 2023, '4', 'B'),
+(2, 2023, '4', 'A'),
+(6, 2023, '3', 'C');
 
 -- --------------------------------------------------------
 
@@ -123,8 +131,8 @@ CREATE TABLE `tblresult` (
 CREATE TABLE `tblstudents` (
   `StudentId` int(11) NOT NULL,
   `StudentName` varchar(100) NOT NULL,
-  `Usn` varchar(100) NOT NULL,
-  `ClassId` int(11) NOT NULL,
+  `USN` varchar(100) NOT NULL,
+  `Batch` int(4) NOT NULL,
   `Status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -154,6 +162,14 @@ CREATE TABLE `tblsubjects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
+-- Dumping data for table `tblsubjects`
+--
+
+INSERT INTO `tblsubjects` (`id`, `Semester`, `SubjectName`, `SubjectCode`) VALUES
+(1, 1, 'DBS', '21MCA108'),
+(2, 1, 'COA', '21MCA103');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -174,7 +190,7 @@ ALTER TABLE `mentors`
 --
 ALTER TABLE `results`
   ADD PRIMARY KEY (`stdid`),
-  ADD UNIQUE KEY `usn` (`usn`);
+  ADD UNIQUE KEY `usn` (`USN`);
 
 --
 -- Indexes for table `tblclasses`
@@ -220,7 +236,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `mentors`
 --
 ALTER TABLE `mentors`
-  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `results`
@@ -232,7 +248,7 @@ ALTER TABLE `results`
 -- AUTO_INCREMENT for table `tblclasses`
 --
 ALTER TABLE `tblclasses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tblresult`
@@ -256,7 +272,7 @@ ALTER TABLE `tblsubjectcombination`
 -- AUTO_INCREMENT for table `tblsubjects`
 --
 ALTER TABLE `tblsubjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

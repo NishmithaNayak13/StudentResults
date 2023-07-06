@@ -1,17 +1,9 @@
 <?php
-#session_start();
-#error_reporting(0);
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
-
-#if(strlen($_SESSION['alogin'])=="")
- #   {   
-  #  header("Location: index.php"); 
-   # }
-#else{
 if(isset($_POST['submit']))
 {
     $sql="INSERT INTO  tblclasses(Batch,Semester,Section) VALUES('$_POST[batch]','$_POST[semester]','$_POST[section]')";
@@ -23,8 +15,6 @@ if(isset($_POST['submit']))
             echo "<script>window.location='dashboard.php';</script>";
         }
 }
-   
-#}
 ?>
 <!DOCTYPE html>
 <html lang="en">

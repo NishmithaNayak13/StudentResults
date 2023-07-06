@@ -4,6 +4,16 @@ if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
+if(isset($_GET['delid']))
+{
+	$sqldel ="DELETE FROM tblclasses where Batch='$_GET[delid]'";
+	$qsqldel = mysqli_query($dbh,$sqldel);
+	if(mysqli_affected_rows($dbh) == 1)
+	{
+		echo "<script>alert('Class Record deleted successfully..');</script>";
+		echo "<script>window.location='manage-classes.php';</script>";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +114,7 @@ if(isset($_SESSION['UserName']))
                                                                 
                                                                 echo"</td>
                                                                         <td>
-                                                                            <a href='create-class.php?editid=$rsview[Batch]' class='btn btn-info'>Edit</a>
+                                                                            <a href='edit-class.php?editid=$rsview[Batch]' class='btn btn-info'>Edit</a>
                                                                             <a href='manage-classes.php?delid=$rsview[Batch]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
                                                                         </td>
                                                                     </tr>";
@@ -159,6 +169,17 @@ if(isset($_SESSION['UserName']))
 
                 $('#example3').DataTable();
             });
+            function confirmdel()
+{
+	if(confirm("Are you sure want to delete this record?") == true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
         </script>
     </body>
 </html>
