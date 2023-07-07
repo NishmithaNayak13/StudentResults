@@ -1,5 +1,4 @@
 <?php
-
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
@@ -7,9 +6,7 @@ if(isset($_SESSION['UserName']))
 }
 if(isset($_POST['submit']))
 {
-
-    $status=1;
-    $sql="INSERT INTO  results(USN,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE,SGPA,CGPA) VALUES('$_POST[usn]','$_POST[subject]','$_POST[mse1]','$_POST[mse2]','$_POST[task1]','$_POST[task2]','$_POST[cie]','$_POST[see]','$_POST[sgpa]','$_POST[cgpa]')";
+    $sql="INSERT INTO results(Mentor,Batch,USN,Semester,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE) VALUES('$_POST[mentor]','$_POST[batch]','$_POST[usn]','$_POST[semester]','$_POST[subject]','$_POST[mse1]','$_POST[mse2]','$_POST[task1]','$_POST[task2]','$_POST[cie]','$_POST[see]')";
     $qsql = mysqli_query($dbh,$sql);
     echo mysqli_error($dbh);
     if(mysqli_affected_rows($dbh)==1)
@@ -18,16 +15,6 @@ if(isset($_POST['submit']))
         echo "<script>window.location='dashboard.php';</script>";
     }
 }
-
-# Name-mentors....Batch,usn,name-tblstudents....Semester,SubjectName-tblsubjects
- $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
- $stmt->execute(array(':cid' => $class));
-  $sid1=array();
- while($row=$stmt->fetch(PDO::FETCH_ASSOC))
- {
-
-array_push($sid1,$row['id']);
-   } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,50 +31,6 @@ array_push($sid1,$row['id']);
         <link rel="stylesheet" href="css/select2/select2.min.css" >
         <link rel="stylesheet" href="css/main.css" media="screen" >
         <script src="js/modernizr/modernizr.min.js"></script>
-        <script>
-function getStudent(val) {
-    $.ajax({
-    type: "POST",
-    url: "get_student.php",
-    data:'classid='+val,
-    success: function(data){
-        $("#studentid").html(data);
-        
-    }
-    });
-$.ajax({
-        type: "POST",
-        url: "get_student.php",
-        data:'classid1='+val,
-        success: function(data){
-            $("#subject").html(data);
-            
-        }
-        });
-}
-    </script>
-<script>
-
-function getresult(val,clid) 
-{   
-    
-var clid=$(".clid").val();
-var val=$(".stid").val();;
-var abh=clid+'$'+val;
-//alert(abh);
-    $.ajax({
-        type: "POST",
-        url: "get_student.php",
-        data:'studclass='+abh,
-        success: function(data){
-            $("#reslt").html(data);
-            
-        }
-        });
-}
-</script>
-
-
     </head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
@@ -145,9 +88,9 @@ var abh=clid+'$'+val;
                                                 <?php $sql = "SELECT * from mentors";
                                                  $query = mysqli_query($dbh,$sql);
                                                  echo mysqli_error($dbh);
-                                                 while($rs = mysqli_fetch_array($query))
+                                                 while($rscourse = mysqli_fetch_array($query))
                                                      {  
-                                                         echo "<option value='$rs[Name]'></option>";
+                                                         echo "<option value='$rscourse[Name]'>$rscourse[Name]</option>";
                                                      } ?>
                                             </select>
                                         </div>
@@ -162,7 +105,7 @@ var abh=clid+'$'+val;
                                                 echo mysqli_error($dbh);
                                                 while($rscourse = mysqli_fetch_array($query))
                                                     {  
-                                                        echo "<option value='$rscourse[Batch]'></option>";
+                                                        echo "<option value='$rscourse[Batch]'>$rscourse[Batch]</option>";
                                                     }
                                                 ?>
                                             </select>
@@ -178,15 +121,92 @@ var abh=clid+'$'+val;
                                                 echo mysqli_error($dbh);
                                                 while($rs = mysqli_fetch_array($query))
                                                     {  
-                                                        echo "<option value='$rs[USN]'></option>";
+                                                        echo "<option value='$rs[USN]'>$rs[USN]</option>";
                                                     }
                                                 ?>
                                             </select>
                                         </div>
                                     </div>
-                                        
-
-                                                    
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Semester</label>
+                                        <div class="col-sm-10">
+                                            <select name="semester" class="form-control" id="semester" required="required">
+                                                <option value="">Select Semester</option>
+                                                <?php $sql = "SELECT DISTINCT(Semester) FROM tblsubjects";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[Semester]'>$rs[Semester]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Subject</label>
+                                        <div class="col-sm-10">
+                                            <select name="subject" class="form-control" id="subject" required="required">
+                                                <option value="">Select Subject</option>
+                                                <?php $sql = "SELECT * from tblsubjects";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[SubjectName]'>$rs[SubjectName]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">MSE 1</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="mse1" class="form-control" id="mse1" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">MSE 2</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="mse2" class="form-control" id="mse2" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">TASK 1</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="task1" class="form-control" id="task1" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">TASK 2</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="task2" class="form-control" id="task2" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">CIE</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="cie" class="form-control" id="cie" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">SEE</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="see" class="form-control" id="see" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">SGPA</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="sgpa" class="form-control" id="sgpa" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">CGPA</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="cgpa" class="form-control" id="cgpa" required="required" autocomplete="off">
+                                        </div>
+                                    </div> -->
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
                                                             <button type="submit" name="submit" id="submit" class="btn btn-primary">Declare Result</button>

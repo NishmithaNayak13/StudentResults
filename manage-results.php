@@ -76,7 +76,7 @@ if(isset($_SESSION['UserName']))
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Student Name</th>
+                                                        <th>Mentor</th>
                                                         <th>USN</th>
                                                         <th>Batch</th>
                                                         <th>Mentor</th>
@@ -85,36 +85,6 @@ if(isset($_SESSION['UserName']))
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-<?php $sql = "SELECT  distinct tblstudents.StudentName,tblstudents.USN,tblstudents.Batch,tblstudents.StudentId,tblstudents.Status,tblclasses.ClassName,tblclasses.Section from tblresult join tblstudents on tblstudents.StudentId=tblresult.StudentId  join tblclasses on tblclasses.id=tblresult.ClassId";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<tr>
- <td><?php echo htmlentities($cnt);?></td>
-                                                            <td><?php echo htmlentities($result->StudentName);?></td>
-                                                            <td><?php echo htmlentities($result->RollId);?></td>
-                                                            <td><?php echo htmlentities($result->ClassName);?>(<?php echo htmlentities($result->Section);?>)</td>
-                                                            <td><?php echo htmlentities($result->RegDate);?></td>
-                                                             <td><?php if($result->Status==1){
-echo htmlentities('Active');
-}
-else{
-   echo htmlentities('Blocked'); 
-}
-                                                                ?></td>
-<td>
-<a href="edit-result.php?stid=<?php echo htmlentities($result->StudentId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
-
-</td>
-</tr>
-<?php $cnt=$cnt+1;}} ?>
-                                                       
-                                                    
                                                     </tbody>
                                                 </table>
                                             </div>

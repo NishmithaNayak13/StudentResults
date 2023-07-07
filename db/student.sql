@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2023 at 10:09 AM
+-- Generation Time: Jul 07, 2023 at 12:14 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -72,8 +72,11 @@ INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`,
 --
 
 CREATE TABLE `results` (
-  `stdid` int(11) NOT NULL,
+  `Rid` int(11) NOT NULL,
+  `Mentor` int(50) NOT NULL,
+  `Batch` int(10) NOT NULL,
   `USN` varchar(20) NOT NULL,
+  `Semester` int(10) NOT NULL,
   `Subject` varchar(20) NOT NULL,
   `MSE1` int(5) NOT NULL,
   `MSE2` int(5) NOT NULL,
@@ -84,6 +87,15 @@ CREATE TABLE `results` (
   `SGPA` decimal(5,0) NOT NULL,
   `CGPA` decimal(5,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `results`
+--
+
+INSERT INTO `results` (`Rid`, `Mentor`, `Batch`, `USN`, `Semester`, `Subject`, `MSE1`, `MSE2`, `Task1`, `Task2`, `CIE`, `SEE`, `SGPA`, `CGPA`) VALUES
+(2, 0, 2023, 'Data Structures', 0, '', 10, 10, 5, 6, 31, 42, 0, 0),
+(3, 0, 2023, '4NM21MC045', 1, 'DBS', 14, 15, 10, 10, 49, 47, 0, 0),
+(4, 0, 2023, '4NM21MC085', 1, 'DBS', 14, 14, 10, 10, 48, 48, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -200,7 +212,7 @@ ALTER TABLE `mentors`
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
-  ADD PRIMARY KEY (`stdid`),
+  ADD PRIMARY KEY (`Rid`),
   ADD UNIQUE KEY `usn` (`USN`);
 
 --
@@ -254,7 +266,7 @@ ALTER TABLE `mentors`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `stdid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tblclasses`
