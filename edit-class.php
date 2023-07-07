@@ -120,13 +120,6 @@ if(isset($_GET['editid']))
                                                 			<input type="text" name="semester" class="form-control" required="required" id="semester" value="<?php echo $rsedit['Semester']; ?>">                                                           
                                                 		</div>
                                                 	</div>
-                                                    
-                                                    <div class="form-group has-success">
-                                                        <label for="success" class="control-label">Section</label>
-                                                        <div class="">
-                                                            <input type="text" name="section" class="form-control" required="required" id="section" value="<?php echo $rsedit['Section']; ?>">
-                                                        </div>
-                                                    </div>
                                                     <div class="form-group has-success">
                                                         <div class="">
                                                            <button type="submit" name="submit" class="btn btn-success btn-labeled">Submit<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>

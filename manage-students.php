@@ -98,7 +98,7 @@ if(isset($_SESSION['UserName']))
                                                         while($rsview = mysqli_fetch_array($query))
                                                         {
                                                             echo "<tr>
-                                                                <td>$rsview[id]</td>                                                               
+                                                                <td>$rsview[StudentId]</td>                                                               
                                                                 <td>$rsview[StudentName]</td>
                                                                 <td>$rsview[USN]</td>
                                                                 <td>$rsview[Batch]</td>

@@ -94,8 +94,7 @@ if(isset($_GET['delid']))
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Batch</th>
-                                                            <th>Semester</th>
-                                                            <th>Section</th>                                                          
+                                                            <th>Semester</th>                                                       
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>                                                 
@@ -108,10 +107,7 @@ if(isset($_GET['delid']))
                                                             echo "<tr>
                                                                 <td>$rsview[id]</td>
                                                                 <td>$rsview[Batch]</td>
-                                                                <td>$rsview[Semester]</td>
-                                                                <td>$rsview[Section]</td>";
-                                                                
-                                                                
+                                                                <td>$rsview[Semester]</td>";
                                                                 echo"</td>
                                                                         <td>
                                                                             <a href='edit-class.php?editid=$rsview[Batch]' class='btn btn-info'>Edit</a>

@@ -1,9 +1,12 @@
 <?php
+include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Dashboard</title>
 </head>
@@ -35,13 +38,12 @@ if(isset($_SESSION['UserName']))
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-primary" href="manage-mentors.php">
                                             <?php
-                                            $sql1 ="SELECT count(*) from mentors; ";
-                                            $result1=$conn->query($sql);
-                                            $row1 = $result1->fetch_assoc();
-                                            $count1 = $row1['count'];
+                                            $sqlcount = "SELECT * FROM mentors";
+                                            $qsqlcount = mysqli_query($dbh,$sqlcount);
+                                            echo mysqli_num_rows($qsqlcount);
                                             ?>
 
-                                            <span class="number counter"><?php echo("ddds");?></span>
+                                            <span class="number counter"></span>
                                             <span class="name">Mentors</span>
                                             <span class="bg-icon"><i class="fa fa-users"></i></span>
                                         </a>
@@ -51,14 +53,12 @@ if(isset($_SESSION['UserName']))
 
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-danger" href="manage-subjects.php">
-<?php
-$sql ="SELECT id from  tblsubjects ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$totalsubjects=$query->rowCount();
-?>
-                                            <span class="number counter"><?php echo htmlentities($totalsubjects);?></span>
+                                            <?php
+                                            $sqlcount = "SELECT * FROM tblsubjects";
+                                            $qsqlcount = mysqli_query($dbh,$sqlcount);
+                                            echo mysqli_num_rows($qsqlcount);
+                                            ?>
+                                            <span class="number counter"></span>
                                             <span class="name">Subjects Listed</span>
                                             <span class="bg-icon"><i class="fa fa-ticket"></i></span>
                                         </a>
@@ -69,13 +69,11 @@ $totalsubjects=$query->rowCount();
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-warning" href="manage-classes.php">
                                         <?php
-$sql2 ="SELECT id from  tblclasses ";
-$query2 = $dbh -> prepare($sql2);
-$query2->execute();
-$results2=$query2->fetchAll(PDO::FETCH_OBJ);
-$totalclasses=$query2->rowCount();
-?>
-                                            <span class="number counter"><?php echo htmlentities($totalclasses);?></span>
+                                        $sqlcount = "SELECT * FROM tblclasses";
+                                        $qsqlcount = mysqli_query($dbh,$sqlcount);
+                                        echo mysqli_num_rows($qsqlcount);
+                                        ?>
+                                            <span class="number counter"></span>
                                             <span class="name">Total classes listed</span>
                                             <span class="bg-icon"><i class="fa fa-bank"></i></span>
                                         </a>
@@ -86,14 +84,11 @@ $totalclasses=$query2->rowCount();
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-success" href="manage-results.php">
                                         <?php
-$sql3="SELECT  distinct StudentId from  tblresult ";
-$query3 = $dbh -> prepare($sql3);
-$query3->execute();
-$results3=$query3->fetchAll(PDO::FETCH_OBJ);
-$totalresults=$query3->rowCount();
-?>
-
-                                            <span class="number counter"><?php echo htmlentities($totalresults);?></span>
+                                            $sqlcount = "SELECT * FROM tblresult";
+                                            $qsqlcount = mysqli_query($dbh,$sqlcount);
+                                            echo mysqli_num_rows($qsqlcount);
+                                            ?>
+                                            <span class="number counter"></span>
                                             <span class="name">Results Declared</span>
                                             <span class="bg-icon"><i class="fa fa-file-text"></i></span>
                                         </a>

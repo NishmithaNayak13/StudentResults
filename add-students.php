@@ -8,7 +8,7 @@ if(isset($_POST['submit']))
 {
 
     $status=1;
-    $sql="INSERT INTO  tblstudents(StudentName,USN,Batch,Status) VALUES('$_POST[studentname]','$_POST[usn]','$_POST[batch]','$_POST[status]')";
+    $sql="INSERT INTO  tblstudents(StudentName,USN,Batch,Section,Mentor,Status) VALUES('$_POST[name]','$_POST[usn]','$_POST[batch]','$_POST[section]','$_POST[mentor]','$_POST[status]')";
     $qsql = mysqli_query($dbh,$sql);
     echo mysqli_error($dbh);
     if(mysqli_affected_rows($dbh)==1)
@@ -79,7 +79,7 @@ if(isset($_POST['submit']))
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">USN</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="usn" class="form-control" id="usn" maxlength="5" required="required" autocomplete="off">
+                                            <input type="text" name="usn" class="form-control" id="usn" maxlength="" required="required" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -92,25 +92,31 @@ if(isset($_POST['submit']))
                                                 echo mysqli_error($dbh);
                                                 while($rscourse = mysqli_fetch_array($query))
                                                     {  
-                                                        echo "<option value='$rscourse[Batch]'></option>";
+                                                        echo "<option value='$rscourse[Batch]'>$rscourse[Batch]</option>";
                                                     }
                                                 ?>
                                             </select>
                                         </div>
                                     </div>
-                                   
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Section</label>
                                         <div class="col-sm-10">
-                                           <select name="section" class="form-control" id="section" required="required">
+                                        <select name="section" id="section" class="form-control" >
                                                 <option value="">Select Section</option>
-                                                <?php $sql = "SELECT * from tblclasses";
-                                                 $query = mysqli_query($dbh,$sql);
-                                                 echo mysqli_error($dbh);
-                                                 while($rscourse = mysqli_fetch_array($query))
-                                                     {  
-                                                         echo "<option value='$rscourse[Section]'></option>";
-                                                     } ?>
+                                                <?php
+                                                $arr = array("A","B","C","D");
+                                                foreach($arr as $val)
+                                                {
+                                                    if($val == $rsedit['section'])
+                                                    {
+                                                    echo "<option value='$val' selected >$val</option>";
+                                                    }
+                                                    else
+                                                    {
+                                                    echo "<option value='$val'>$val</option>";
+                                                    }
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
@@ -124,35 +130,33 @@ if(isset($_POST['submit']))
                                                  echo mysqli_error($dbh);
                                                  while($rscourse = mysqli_fetch_array($query))
                                                      {  
-                                                         echo "<option value='$rscourse[Name]'></option>";
+                                                         echo "<option value='$rscourse[Name]'>$rscourse[Name]</option>";
                                                      } ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="labelproperty">Status</label>
-                                        <span class="errormessage" id="status"></span>
-                                        <select name="status" id="status" class="form-control" >
-                                        <option value="">Select Status</option>
-                                        <?php
-                                        $arr = array("Active","Inactive");
-                                        foreach($arr as $val)
-                                        {
-                                            if($val == $rsedit['status'])
-                                            {
-                                            echo "<option value='$val' selected >$val</option>";
-                                            }
-                                            else
-                                            {
-                                            echo "<option value='$val'>$val</option>";
-                                            }
-                                        }
-                                        ?>
-                                        </select>
+                                    <div class="form-group">
+                                        <label for="deafult" class="col-sm-2 control-label">Status</label>
+                                        <div class="col-sm-10">
+                                            <select name="status" id="status" class="form-control" >
+                                                <option value="">Select Status</option>
+                                                <?php
+                                                $arr = array("Active","Inactive");
+                                                foreach($arr as $val)
+                                                {
+                                                    if($val == $rsedit['status'])
+                                                    {
+                                                    echo "<option value='$val' selected >$val</option>";
+                                                    }
+                                                    else
+                                                    {
+                                                    echo "<option value='$val'>$val</option>";
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
                                     </div>
-                                                    
-
-                                                    
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
                                                             <button type="submit" name="submit" class="btn btn-primary">Add</button>
@@ -165,6 +169,7 @@ if(isset($_POST['submit']))
                                     </div>
                                     <!-- /.col-md-12 -->
                                 </div>
+                            </div>
                     </div>
                 </div>
                 <!-- /.content-container -->
