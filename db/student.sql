@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2023 at 04:50 PM
+-- Generation Time: Jul 07, 2023 at 10:09 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -62,7 +62,8 @@ CREATE TABLE `mentors` (
 --
 
 INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`, `Password`, `Status`) VALUES
-(3, 'Nishmitha Nayak', 'MCA', 'Assistant Professor', '4nm21mc061@nmamit.in', 'Nishmitha@123', 'Active');
+(3, 'Nishmitha Nayak', 'MCA', 'Assistant Professor', '4nm21mc061@nmamit.in', 'Nishmithaa@123', 'Active'),
+(4, 'Mangala Shetty', 'MCA', 'Associate Prof', 'mgshetty@nmamit.in', 'mg@12', 'Active');
 
 -- --------------------------------------------------------
 
@@ -93,18 +94,16 @@ CREATE TABLE `results` (
 CREATE TABLE `tblclasses` (
   `id` int(11) NOT NULL,
   `Batch` int(4) NOT NULL,
-  `Semester` varchar(80) DEFAULT NULL,
-  `Section` varchar(5) NOT NULL
+  `Semester` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `tblclasses`
 --
 
-INSERT INTO `tblclasses` (`id`, `Batch`, `Semester`, `Section`) VALUES
-(1, 2023, '4', 'B'),
-(2, 2023, '4', 'A'),
-(6, 2023, '3', 'C');
+INSERT INTO `tblclasses` (`id`, `Batch`, `Semester`) VALUES
+(7, 2024, '1'),
+(8, 2023, '1');
 
 -- --------------------------------------------------------
 
@@ -133,8 +132,19 @@ CREATE TABLE `tblstudents` (
   `StudentName` varchar(100) NOT NULL,
   `USN` varchar(100) NOT NULL,
   `Batch` int(4) NOT NULL,
+  `Section` varchar(5) NOT NULL,
+  `Mentor` varchar(20) NOT NULL,
   `Status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblstudents`
+--
+
+INSERT INTO `tblstudents` (`StudentId`, `StudentName`, `USN`, `Batch`, `Section`, `Mentor`, `Status`) VALUES
+(1, '', '4NM21MC085', 2023, '', '', 0),
+(2, '', '4NM21MC044', 2023, 'A', 'Mangala Shetty', 0),
+(3, 'Mahima', '4NM21MC045', 2023, 'A', 'Mangala Shetty', 0);
 
 -- --------------------------------------------------------
 
@@ -167,7 +177,8 @@ CREATE TABLE `tblsubjects` (
 
 INSERT INTO `tblsubjects` (`id`, `Semester`, `SubjectName`, `SubjectCode`) VALUES
 (1, 1, 'DBS', '21MCA108'),
-(2, 1, 'COA', '21MCA103');
+(2, 1, 'COA', '21MCA103'),
+(4, 1, 'Data Structures', '21mca101');
 
 --
 -- Indexes for dumped tables
@@ -196,7 +207,8 @@ ALTER TABLE `results`
 -- Indexes for table `tblclasses`
 --
 ALTER TABLE `tblclasses`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Batch` (`Batch`);
 
 --
 -- Indexes for table `tblresult`
@@ -236,7 +248,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `mentors`
 --
 ALTER TABLE `mentors`
-  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `MentorId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `results`
@@ -248,7 +260,7 @@ ALTER TABLE `results`
 -- AUTO_INCREMENT for table `tblclasses`
 --
 ALTER TABLE `tblclasses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tblresult`
@@ -260,7 +272,7 @@ ALTER TABLE `tblresult`
 -- AUTO_INCREMENT for table `tblstudents`
 --
 ALTER TABLE `tblstudents`
-  MODIFY `StudentId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `StudentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tblsubjectcombination`
@@ -272,7 +284,7 @@ ALTER TABLE `tblsubjectcombination`
 -- AUTO_INCREMENT for table `tblsubjects`
 --
 ALTER TABLE `tblsubjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
