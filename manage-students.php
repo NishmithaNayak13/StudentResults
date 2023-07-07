@@ -1,11 +1,9 @@
-
 <?php
 include('includes/config.php');
 if(isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,8 +84,9 @@ if(isset($_SESSION['UserName']))
                                                             <th>USN</th>
                                                             <th>Batch</th>
                                                             <th>Section</th>
+                                                            <th>Mentor</th>
                                                            <th>Status</th>
-                                                            <!--<th>Action</th>-->
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     
@@ -104,7 +103,7 @@ if(isset($_SESSION['UserName']))
                                                                 <td>$rsview[Batch]</td>
                                                                 <td>$rsview[Section]</td>
                                                                 <td>$rsview[Mentor]</td>
-                                                                <td>$rsview[Status]</td>";
+                                                                <td>$rsview[Status] <br>";
                                                                 echo"</td>
                                                                         <td>
                                                                             <a href='edit-student.php?editid=$rsview[USN]' class='btn btn-info'>Edit</a>
@@ -134,12 +133,8 @@ if(isset($_SESSION['UserName']))
         <script src="js/pace/pace.min.js"></script>
         <script src="js/lobipanel/lobipanel.min.js"></script>
         <script src="js/iscroll/iscroll.js"></script>
-
-        <!-- ========== PAGE JS FILES ========== -->
         <script src="js/prism/prism.js"></script>
         <script src="js/DataTables/datatables.min.js"></script>
-
-        <!-- ========== THEME JS ========== -->
         <script src="js/main.js"></script>
         <script>
             $(function($) {
