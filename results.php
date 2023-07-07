@@ -1,27 +1,24 @@
 <?php
-#session_start();
-#error_reporting(0);
+
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
 if(isset($_POST['submit']))
 {
-	
 
+    $status=1;
+    $sql="INSERT INTO  results(USN,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE,SGPA,CGPA) VALUES('$_POST[usn]','$_POST[subject]','$_POST[mse1]','$_POST[mse2]','$_POST[task1]','$_POST[task2]','$_POST[cie]','$_POST[see]','$_POST[sgpa]','$_POST[cgpa]')";
+    $qsql = mysqli_query($dbh,$sql);
+    echo mysqli_error($dbh);
+    if(mysqli_affected_rows($dbh)==1)
+    {
+        echo "<script>alert('Student result added successfully...');</script>";
+        echo "<script>window.location='dashboard.php';</script>";
+    }
+}
 
-$usn=$_POST['usn']; 
-$subject=$_POST['subject'];
-$mse1=$_POST['mse1'];
-$mse2=$_POST['mse2'];
-$task1=$_POST['task1'];
-$task2=$_POST['task2'];
-$cie=$_POST['cie'];
-$see=$_POST['see'];
-$sgpa=$_POST['sgpa'];
-$cgpa=$_POST['cgpa'];
 # Name-mentors....Batch,usn,name-tblstudents....Semester,SubjectName-tblsubjects
  $stmt = $dbh->prepare("SELECT tblsubjects.SubjectName,tblsubjects.id FROM tblsubjectcombination join  tblsubjects on  tblsubjects.id=tblsubjectcombination.SubjectId WHERE tblsubjectcombination.ClassId=:cid order by tblsubjects.SubjectName");
  $stmt->execute(array(':cid' => $class));
@@ -31,35 +28,6 @@ $cgpa=$_POST['cgpa'];
 
 array_push($sid1,$row['id']);
    } 
-  
-for($i=0;$i<count($mark);$i++){
-    $mar=$mark[$i];
-  $sid=$sid1[$i];
-
-$sql="INSERT INTO  result(USN,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE,SGPA,CGPA) VALUES(:usn,:subject,:mse1,:mse2,:task1,:task2,:cie,:see,:sgpa,:cgpa)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':usn',$usn,PDO::PARAM_STR);
-$query->bindParam(':subject',$subject,PDO::PARAM_STR);
-$query->bindParam(':mse1',$mse1,PDO::PARAM_STR);
-$query->bindParam(':mse2',$mse2,PDO::PARAM_STR);
-$query->bindParam(':task1',$task1,PDO::PARAM_STR);
-$query->bindParam(':task2',$task2,PDO::PARAM_STR);
-$query->bindParam(':cie',$cie,PDO::PARAM_STR);
-$query->bindParam(':see',$see,PDO::PARAM_STR);
-$query->bindParam(':sgpa',$sgpa,PDO::PARAM_STR);
-$query->bindParam(':cgpa',$cgpa,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-$msg="Result info added successfully";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-}
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -165,76 +133,58 @@ var abh=clid+'$'+val;
                                         <div class="panel">
                                            
                                             <div class="panel-body">
-<?php if($msg){?>
-    <div class="alert alert-success left-icon-alert" role="alert">
-        <strong>Well done!</strong><?php echo htmlentities($msg); ?>
-    </div><?php } 
-    else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-        <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-    </div>
-<?php } ?>
+
                                          <form class="form-horizontal" method="post">
 
+                                        
                                         <div class="form-group">
-                                            <label for="default" class="col-sm-2 control-label">Class</label>
-                                            <div class="col-sm-10">
-                                                <select name="class" class="form-control clid" id="classid" onChange="getStudent(this.value);" required="required">
-                                                <option value="">Select Class</option>
+                                        <label for="default" class="col-sm-2 control-label">Mentor</label>
+                                        <div class="col-sm-10">
+                                           <select name="mentor" class="form-control" id="mentor" required="required">
+                                                <option value="">Select Mentor</option>
+                                                <?php $sql = "SELECT * from mentors";
+                                                 $query = mysqli_query($dbh,$sql);
+                                                 echo mysqli_error($dbh);
+                                                 while($rs = mysqli_fetch_array($query))
+                                                     {  
+                                                         echo "<option value='$rs[Name]'></option>";
+                                                     } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Batch</label>
+                                        <div class="col-sm-10">
+                                            <select name="batch" class="form-control" id="batch" required="required">
+                                                <option value="">Select Batch</option>
                                                 <?php $sql = "SELECT * from tblclasses";
-                                                    $query = $dbh->prepare($sql);
-                                                    $query->execute();
-                                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                                    if($query->rowCount() > 0)
-                                                    {
-                                                        foreach($results as $result)
-                                                        {   ?>
-                                                        <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->ClassName); ?>&nbsp; Section-<?php echo htmlentities($result->Section); ?></option>
-                                                <?php }} ?>
-                                                </select>
-                                            </div>
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rscourse = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rscourse[Batch]'></option>";
+                                                    }
+                                                ?>
+                                            </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="date" class="col-sm-2 control-label ">Mentor</label>
-                                            <div class="col-sm-10">
-                                                <select name="mentor" class="form-control stid" id="mentor" required="required" onChange="getresult(this.value);">
-                                                </select>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Student USN</label>
+                                        <div class="col-sm-10">
+                                            <select name="usn" class="form-control" id="usn" required="required">
+                                                <option value="">Select USN</option>
+                                                <?php $sql = "SELECT * from tblstudents";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[USN]'></option>";
+                                                    }
+                                                ?>
+                                            </select>
                                         </div>
-
-
-
-
-                                        <div class="form-group">
-                                            <label for="date" class="col-sm-2 control-label ">Student usn</label>
-                                            <div class="col-sm-10">
-                                                <select name="usn" class="form-control stid" id="usn" required="required" onChange="getresult(this.value);">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="date" class="col-sm-2 control-label ">Student usn</label>
-                                            <div class="col-sm-10">
-                                                <select name="usn" class="form-control stid" id="usn" required="required" onChange="getresult(this.value);">
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">                                              
-                                                        <div class="col-sm-10">
-                                                    <div  id="reslt">
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                        <div class="form-group">
-                                                        <label for="date" class="col-sm-2 control-label">Subjects</label>
-                                                        <div class="col-sm-10">
-                                                    <div  id="subject">
-                                                    </div>
-                                                        </div>
-                                                    </div>
-
+                                    </div>
+                                        
 
                                                     
                                                     <div class="form-group">
@@ -277,4 +227,3 @@ var abh=clid+'$'+val;
         </script>
     </body>
 </html>
-<?PHP } ?>

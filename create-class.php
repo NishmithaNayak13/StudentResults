@@ -6,7 +6,7 @@ if(isset($_SESSION['UserName']))
 }
 if(isset($_POST['submit']))
 {
-    $sql="INSERT INTO  tblclasses(Batch,Semester,Section) VALUES('$_POST[batch]','$_POST[semester]','$_POST[section]')";
+    $sql="INSERT INTO  tblclasses(Batch,Semester) VALUES('$_POST[batch]','$_POST[semester]')";
     $qsql = mysqli_query($dbh,$sql);
     echo mysqli_error($dbh);
     if(mysqli_affected_rows($dbh)==1)
@@ -52,16 +52,12 @@ if(isset($_POST['submit']))
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
 
-            <!-- ========== TOP NAVBAR ========== -->
+            
             <?php include('includes/topbar.php');?>   
-          <!--End Top bar-->
-            <!-- ========== WRAPPER FOR BOTH SIDEBARS & MAIN CONTENT ========== -->
             <div class="content-wrapper">
                 <div class="content-container">
-
-            <!-- ========== LEFT SIDEBAR ========== -->
             <?php include('includes/leftbar.php');?>                   
-            <!-- /.left-sidebar -->
+
                     <div class="main-page">
                         <div class="container-fluid">
                             <div class="row page-title-div">
@@ -70,7 +66,6 @@ if(isset($_POST['submit']))
                                 </div>
                                 
                             </div>
-                            <!-- /.row -->
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
@@ -81,10 +76,7 @@ if(isset($_POST['submit']))
                                 </div>
                                
                             </div>
-                            <!-- /.row -->
                         </div>
-                        <!-- /.container-fluid -->
-
                         <section class="section">
                         <div class="container-fluid">
                              <div class="row">
@@ -110,13 +102,6 @@ if(isset($_POST['submit']))
                                                 			<input type="text" name="semester" class="form-control" required="required" id="semester">                                                           
                                                 		</div>
                                                 	</div>
-                                                    
-                                                    <div class="form-group has-success">
-                                                        <label for="success" class="control-label">Section</label>
-                                                        <div class="">
-                                                            <input type="text" name="section" class="form-control" required="required" id="section">
-                                                        </div>
-                                                    </div>
                                                     <div class="form-group has-success">
                                                         <div class="">
                                                            <button type="submit" name="submit" class="btn btn-success btn-labeled">Submit<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>
@@ -126,20 +111,20 @@ if(isset($_POST['submit']))
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- /.col-md-8 col-md-offset-2 -->
+                                    
                                 </div>
-                                <!-- /.row -->
+                               
                             </div>
-                            <!-- /.container-fluid -->
+                            
                         </section>              
                     </div>
-                    <!-- /.main-page -->
+                    
                 </div>
-                <!-- /.content-container -->
+               
             </div>
-            <!-- /.content-wrapper -->
+           
         </div>
-        <!-- /.main-wrapper -->
+       
 
         <!-- ========== COMMON JS FILES ========== -->
         <script src="js/jquery/jquery-2.2.4.min.js"></script>

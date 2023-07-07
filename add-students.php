@@ -85,43 +85,71 @@ if(isset($_POST['submit']))
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Batch</label>
                                         <div class="col-sm-10">
-                                            <!--<input type="option" name="batch" class="form-control" id="batch" required="required" autocomplete="off">-->
-                                            <select name="batch" class="form-control" id="default" required="required">
+                                            <select name="batch" class="form-control" id="batch" required="required">
                                                 <option value="">Select Batch</option>
                                                 <?php $sql = "SELECT * from tblclasses";
-                                                $query = $dbh->prepare($sql);
-                                                $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                                if($query->rowCount() > 0)
-                                                {
-                                                        foreach($results as $result)
-                                                        {   ?>
-                                                            <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->Batch); ?></option>
-                                                <?php }} ?>
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rscourse = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rscourse[Batch]'></option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Section</label>
+                                        <div class="col-sm-10">
+                                           <select name="section" class="form-control" id="section" required="required">
+                                                <option value="">Select Section</option>
+                                                <?php $sql = "SELECT * from tblclasses";
+                                                 $query = mysqli_query($dbh,$sql);
+                                                 echo mysqli_error($dbh);
+                                                 while($rscourse = mysqli_fetch_array($query))
+                                                     {  
+                                                         echo "<option value='$rscourse[Section]'></option>";
+                                                     } ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="default" class="col-sm-2 control-label">Section</label>
+                                        <label for="default" class="col-sm-2 control-label">Mentor</label>
                                         <div class="col-sm-10">
-                                           <!-- <input type="option" name="section" class="form-control" id="section" required="required" autocomplete="off">-->
-                                           <select name="section" class="form-control" id="default" required="required">
-                                                <option value="">Select Section</option>
-                                                <?php $sql = "SELECT * from tblclasses";
-                                                $query = $dbh->prepare($sql);
-                                                $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
-                                                if($query->rowCount() > 0)
-                                                {
-                                                        foreach($results as $result)
-                                                        {   ?>
-                                                            <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->Section); ?></option>
-                                                <?php }} ?>
+                                           <select name="mentor" class="form-control" id="mentor" required="required">
+                                                <option value="">Select Mentor</option>
+                                                <?php $sql = "SELECT * from mentors";
+                                                 $query = mysqli_query($dbh,$sql);
+                                                 echo mysqli_error($dbh);
+                                                 while($rscourse = mysqli_fetch_array($query))
+                                                     {  
+                                                         echo "<option value='$rscourse[Name]'></option>";
+                                                     } ?>
                                             </select>
                                         </div>
                                     </div>
-                                                        </div>
-                                                    </div>
+                                    <div>
+                                        <label class="labelproperty">Status</label>
+                                        <span class="errormessage" id="status"></span>
+                                        <select name="status" id="status" class="form-control" >
+                                        <option value="">Select Status</option>
+                                        <?php
+                                        $arr = array("Active","Inactive");
+                                        foreach($arr as $val)
+                                        {
+                                            if($val == $rsedit['status'])
+                                            {
+                                            echo "<option value='$val' selected >$val</option>";
+                                            }
+                                            else
+                                            {
+                                            echo "<option value='$val'>$val</option>";
+                                            }
+                                        }
+                                        ?>
+                                        </select>
+                                    </div>
                                                     
 
                                                     
