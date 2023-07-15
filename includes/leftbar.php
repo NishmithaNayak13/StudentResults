@@ -1,3 +1,4 @@
+
 <div class="left-sidebar bg-black-300 box-shadow ">
                         <div class="sidebar-content">
                             <!--<div class="user-info closed">
@@ -35,7 +36,7 @@
                                            
                                         </ul>
                                     </li>
-  <li class="has-children">
+                                    <li class="has-children">
                                         <a href="#"><i class="fa fa-file-text"></i> <span>Subjects</span> <i class="fa fa-angle-right arrow"></i></a>
                                         <ul class="child-nav">
                                             <li><a href="create-subject.php"><i class="fa fa-bars"></i> <span>Create Subject</span></a></li>
@@ -44,7 +45,7 @@
                                            <a href="manage-subjectcombination.php"><i class="fa fa-newspaper-o"></i> <span>Manage Subject Combination </span></a></li>
                                         </ul>
                                     </li>
-   <li class="has-children">
+                                    <li class="has-children">
                                         <a href="#"><i class="fa fa-users"></i> <span>Students</span> <i class="fa fa-angle-right arrow"></i></a>
                                         <ul class="child-nav">
                                             <li><a href="add-students.php"><i class="fa fa-bars"></i> <span>Add Students</span></a></li>
@@ -52,7 +53,7 @@
                                            
                                         </ul>
                                     </li>
-<li class="has-children">
+                                    <li class="has-children">
                                         <a href="#"><i class="fa fa-info-circle"></i> <span>Result</span> <i class="fa fa-angle-right arrow"></i></a>
                                         <ul class="child-nav">
                                             <li><a href="results.php"><i class="fa fa-bars"></i> <span>Add Result</span></a></li>
@@ -66,4 +67,4 @@
                             <!-- /.sidebar-nav -->
                         </div>
                         <!-- /.sidebar-content -->
-                    </div>
+</div>

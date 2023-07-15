@@ -1,40 +1,39 @@
 <?php
+session_start();
 include('includes/config.php');
-if(isset($_SESSION['UserName']))
-{
-	echo "<script>window.location='index.php';</script>";
+
+if (!isset($_SESSION['UserName'])) {
+    // If the user is not logged in, redirect to the login page
+    header("Location: index.php");
+    exit();
+}
+if (!isset($_SESSION['Email'])) {
+    // If the user is not logged in, redirect to the login page
+    header("Location: index.php");
+    exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Dashboard</title>
 </head>
-    <body class="top-navbar-fixed">
-        <div class="main-wrapper">
-              <?php include('includes/topbar.php');?>
-            <div class="content-wrapper">
-                <div class="content-container">
-
-                    <?php include('includes/leftbar.php');?>
-
-                    <div class="main-page">
-                        <div class="container-fluid">
-                            <div class="row page-title-div">
-                                <div class="col-sm-6">
-                                    <h2 class="title">Dashboard</h2>
-
-                                </div>
-                                <!-- /.col-sm-6 -->
+<body class="top-navbar-fixed">
+    <div class="main-wrapper">
+        <?php include('includes/topbar.php'); ?>
+        <div class="content-wrapper">
+            <div class="content-container">
+                <?php include('includes/leftbar.php'); ?>
+                <div class="main-page">
+                    <div class="container-fluid">
+                        <div class="row page-title-div">
+                            <div class="col-sm-6">
+                                <h2 class="title">Dashboard</h2>
                             </div>
-                            <!-- /.row -->
-
                         </div>
-                        <!-- /.container-fluid -->
-
-                        <section class="section">
-                            <div class="container-fluid">
-                                <div class="row">
+                        <div class="container-fluid">
+                            <div class="row">
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-primary" href="manage-mentors.php">
                                             <?php

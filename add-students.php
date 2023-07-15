@@ -1,12 +1,11 @@
 <?php
-include('includes/config.php');
-if(isset($_SESSION['UserName']))
+session_start();
+if(!isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
 if(isset($_POST['submit']))
 {
-
     #$status=1;
     $sql="INSERT INTO  tblstudents(StudentName,USN,Batch,Section,Mentor,Status) VALUES('$_POST[name]','$_POST[usn]','$_POST[batch]','$_POST[section]','$_POST[mentor]','$_POST[status]')";
     $qsql = mysqli_query($dbh,$sql);

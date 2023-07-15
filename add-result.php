@@ -1,6 +1,4 @@
 <?php
-include('includes/topbar.php');
-include('include/leftbar.php');
 if(!isset($_SESSION['UserName']))
 {   
     echo "<script>window.location='index.php';</script>";

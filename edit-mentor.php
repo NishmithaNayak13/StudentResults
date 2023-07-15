@@ -1,6 +1,7 @@
 <?php
+session_start();
 include('includes/config.php');
-if(isset($_SESSION['UserName']))
+if(!isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
@@ -129,7 +130,7 @@ if(isset($_GET['editid']))
                                                 </div><br><br>
                                                 <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" name="submit" class="btn btn-primary" style="position:relative,height: 100px">Add Mentor</button>
+                                                            <button type="submit" name="submit" class="btn btn-primary" style="position:relative,height: 100px">Update Mentor</button>
                                                         </div>
                                                     </div>     
                                             </form>

@@ -1,6 +1,6 @@
 <?php
-include('includes/config.php');
-if(isset($_SESSION['UserName']))
+session_start();
+if(!isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
