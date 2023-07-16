@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2023 at 12:14 PM
+-- Generation Time: Jul 16, 2023 at 03:08 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -72,11 +72,8 @@ INSERT INTO `mentors` (`MentorId`, `Name`, `Department`, `Designation`, `Email`,
 --
 
 CREATE TABLE `results` (
-  `Rid` int(11) NOT NULL,
-  `Mentor` int(50) NOT NULL,
-  `Batch` int(10) NOT NULL,
+  `stdid` int(11) NOT NULL,
   `USN` varchar(20) NOT NULL,
-  `Semester` int(10) NOT NULL,
   `Subject` varchar(20) NOT NULL,
   `MSE1` int(5) NOT NULL,
   `MSE2` int(5) NOT NULL,
@@ -87,15 +84,6 @@ CREATE TABLE `results` (
   `SGPA` decimal(5,0) NOT NULL,
   `CGPA` decimal(5,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `results`
---
-
-INSERT INTO `results` (`Rid`, `Mentor`, `Batch`, `USN`, `Semester`, `Subject`, `MSE1`, `MSE2`, `Task1`, `Task2`, `CIE`, `SEE`, `SGPA`, `CGPA`) VALUES
-(2, 0, 2023, 'Data Structures', 0, '', 10, 10, 5, 6, 31, 42, 0, 0),
-(3, 0, 2023, '4NM21MC045', 1, 'DBS', 14, 15, 10, 10, 49, 47, 0, 0),
-(4, 0, 2023, '4NM21MC085', 1, 'DBS', 14, 14, 10, 10, 48, 48, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -146,7 +134,7 @@ CREATE TABLE `tblstudents` (
   `Batch` int(4) NOT NULL,
   `Section` varchar(5) NOT NULL,
   `Mentor` varchar(20) NOT NULL,
-  `Status` int(1) NOT NULL
+  `Status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -154,9 +142,10 @@ CREATE TABLE `tblstudents` (
 --
 
 INSERT INTO `tblstudents` (`StudentId`, `StudentName`, `USN`, `Batch`, `Section`, `Mentor`, `Status`) VALUES
-(1, '', '4NM21MC085', 2023, '', '', 0),
-(2, '', '4NM21MC044', 2023, 'A', 'Mangala Shetty', 0),
-(3, 'Mahima', '4NM21MC045', 2023, 'A', 'Mangala Shetty', 0);
+(11, 'Sadhana K M', '4NM21MC081', 2023, 'B', 'Balachandra Rao', 'Active'),
+(12, 'Sameeksha', '4NM21MC082', 2023, 'B', 'Balachandra Rao', 'Active'),
+(13, 'Mahesh', '4NM21MC044', 2023, 'A', 'Mangala Shetty', 'Active'),
+(14, 'Mahima', '4NM21MC045', 2023, 'A', 'Mangala Shetty', 'Active');
 
 -- --------------------------------------------------------
 
@@ -212,7 +201,7 @@ ALTER TABLE `mentors`
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
-  ADD PRIMARY KEY (`Rid`),
+  ADD PRIMARY KEY (`stdid`),
   ADD UNIQUE KEY `usn` (`USN`);
 
 --
@@ -266,7 +255,7 @@ ALTER TABLE `mentors`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `Rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `stdid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tblclasses`
@@ -284,7 +273,7 @@ ALTER TABLE `tblresult`
 -- AUTO_INCREMENT for table `tblstudents`
 --
 ALTER TABLE `tblstudents`
-  MODIFY `StudentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `StudentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tblsubjectcombination`

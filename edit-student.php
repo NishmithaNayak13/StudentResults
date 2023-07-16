@@ -8,15 +8,6 @@ if(!isset($_SESSION['UserName']))
 if(isset($_POST['submit']))
 {
 
-    // #$status=1;
-    // $sql="INSERT INTO  tblstudents(StudentName,USN,Batch,Section,Mentor,Status) VALUES('$_POST[name]','$_POST[usn]','$_POST[batch]','$_POST[section]','$_POST[mentor]','$_POST[status]')";
-    // $qsql = mysqli_query($dbh,$sql);
-    // echo mysqli_error($dbh);
-    // if(mysqli_affected_rows($dbh)==1)
-    // {
-    //     echo "<script>alert('Student added successfully...');</script>";
-    //     echo "<script>window.location='dashboard.php';</script>";
-    // }
     if(isset($_GET['editid']))
     {
         $sql = "UPDATE tblstudents SET StudentName='$_POST[name]', USN='$_POST[usn]', Batch='$_POST[batch]', Section='$_POST[section]', Mentor='$_POST[mentor]', Status='$_POST[status]' WHERE USN='$_GET[editid]'";
@@ -24,8 +15,8 @@ if(isset($_POST['submit']))
         echo mysqli_error($dbh);
         if(mysqli_affected_rows($dbh) == 1)
         {
-            echo "<script>alert('Mentor Record Updated Successfully..');</script>";
-			echo "<script>window.location='manage-mentors.php';</script>";
+            echo "<script>alert('Student Record Updated Successfully..');</script>";
+			echo "<script>window.location='manage-students.php';</script>";
 
         }
     }
@@ -91,19 +82,19 @@ if(isset($_GET['editid']))
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Full Name</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control" id="name" required="required" autocomplete="off">
+                                            <input type="text" name="name" class="form-control" id="name" required="required" autocomplete="off" value="<?php echo $rsedit['StudentName']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">USN</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="usn" class="form-control" id="usn" maxlength="" required="required" autocomplete="off">
+                                            <input type="text" name="usn" class="form-control" id="usn" maxlength="" required="required" autocomplete="off" value="<?php echo $rsedit['USN']; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Batch</label>
                                         <div class="col-sm-10">
-                                            <select name="batch" class="form-control" id="batch" required="required">
+                                            <select name="batch" class="form-control" id="batch" required="required" value="<?php echo $rsedit['Batch']; ?>">
                                                 <option value="">Select Batch</option>
                                                 <?php $sql = "SELECT * from tblclasses";
                                                 $query = mysqli_query($dbh,$sql);
@@ -119,7 +110,7 @@ if(isset($_GET['editid']))
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Section</label>
                                         <div class="col-sm-10">
-                                        <select name="section" id="section" class="form-control" >
+                                        <select name="section" id="section" class="form-control" value="<?php echo $rsedit['Section']; ?>">
                                                 <option value="">Select Section</option>
                                                 <?php
                                                 $arr = array("A","B","C","D");
@@ -141,7 +132,7 @@ if(isset($_GET['editid']))
                                     <div class="form-group">
                                         <label for="default" class="col-sm-2 control-label">Mentor</label>
                                         <div class="col-sm-10">
-                                           <select name="mentor" class="form-control" id="mentor" required="required">
+                                           <select name="mentor" class="form-control" id="mentor" required="required" value="<?php echo $rsedit['Mentor']; ?>">
                                                 <option value="">Select Mentor</option>
                                                 <?php $sql = "SELECT * from mentors";
                                                  $query = mysqli_query($dbh,$sql);
@@ -156,7 +147,7 @@ if(isset($_GET['editid']))
                                     <div class="form-group">
                                         <label for="deafult" class="col-sm-2 control-label">Status</label>
                                         <div class="col-sm-10">
-                                            <select name="status" id="status" class="form-control" >
+                                            <select name="status" id="status" class="form-control" value="<?php echo $rsedit['Status']; ?>">
                                                 <option value="">Select Status</option>
                                                 <?php
                                                 $arr = array("Active","Inactive");

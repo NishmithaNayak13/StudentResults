@@ -1,8 +1,19 @@
 <?php
 session_start();
+include('includes/config.php');
 if(!isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
+}
+if(isset($_GET['delid']))
+{
+	$sqldel ="DELETE FROM tblstudents where USN='$_GET[delid]'";
+	$qsqldel = mysqli_query($dbh,$sqldel);
+	if(mysqli_affected_rows($dbh) == 1)
+	{
+		echo "<script>alert('Student Record deleted successfully..');</script>";
+		echo "<script>window.location='manage-students.php';</script>";
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -107,7 +118,7 @@ if(!isset($_SESSION['UserName']))
                                                                 echo"</td>
                                                                         <td>
                                                                             <a href='edit-student.php?editid=$rsview[USN]' class='btn btn-info'>Edit</a>
-                                                                            <a href='manage-student.php?delid=$rsview[USN]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
+                                                                            <a href='manage-students.php?delid=$rsview[USN]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
                                                                         </td>
                                                                 </tr>";
                                                         }
@@ -148,6 +159,17 @@ if(!isset($_SESSION['UserName']))
 
                 $('#example3').DataTable();
             });
+            function confirmdel()
+{
+	if(confirm("Are you sure want to delete this record?") == true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
         </script>
     </body>
 </html>

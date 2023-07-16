@@ -49,9 +49,9 @@
                                     <li class="has-children">
                                         <a href="#"><i class="fa fa-users"></i> <span>Students</span> <i class="fa fa-angle-right arrow"></i></a>
                                         <ul class="child-nav">
-                                            <li><a href="add-students.php"><i class="fa fa-bars"></i> <span>Add Students</span></a></li>
+                                            <li><a href="add-students.php"><i class="fa fa-bars"></i> <span>Add Student</span></a></li>
+                                            <li><a href="table-addstudents.php"><i class="fa fa fa-server"></i> <span>Add Students</span></a></li>
                                             <li><a href="manage-students.php"><i class="fa fa fa-server"></i> <span>Manage Students</span></a></li>
-                                           
                                         </ul>
                                     </li>
                                     <li class="has-children">
@@ -64,6 +64,7 @@
                                         <li><a href="change-password.php"><i class="fa fa fa-server"></i> <span> Admin Change Password</span></a></li>                                           
                                     </li>
                                     <li><a href="excelsheet.php"><i class="fa fa fa-server"></i> <span> Excel Sheet</span></a></li>
+                                    <li><a href="table-results.php"><i class="fa fa fa-server"></i> <span>Table</span></a></li>
                             </div>
                             <!-- /.sidebar-nav -->
                         </div>
