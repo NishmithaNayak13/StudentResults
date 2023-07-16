@@ -1,4 +1,5 @@
-
+<?php 
+?>
 <div class="left-sidebar bg-black-300 box-shadow ">
                         <div class="sidebar-content">
                             <!--<div class="user-info closed">

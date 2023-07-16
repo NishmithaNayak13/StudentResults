@@ -7,11 +7,6 @@ if (!isset($_SESSION['UserName'])) {
     header("Location: index.php");
     exit();
 }
-if (!isset($_SESSION['Email'])) {
-    // If the user is not logged in, redirect to the login page
-    header("Location: index.php");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>

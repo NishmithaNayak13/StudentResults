@@ -8,17 +8,17 @@ $dttim = date("Y-m-d H:i:s");
 include("includes/config.php");
 if(isset($_SESSION['UserName']))
 {
-	$sqlstaffprofile = "SELECT * FROM admin where UserName ='" . $_SESSION['UserName'] . "'";
-	$qsqlstaffprofile = mysqli_query($dbh,$sqlstaffprofile);
+	$sqladminprofile = "SELECT * FROM admin where UserName ='" . $_SESSION['UserName'] . "'";
+	$qsqladminprofile = mysqli_query($dbh,$sqladminprofile);
 	echo mysqli_error($dbh);
-	$rsstaffprofile = mysqli_fetch_array($qsqlstaffprofile);
+	$rsadminprofile = mysqli_fetch_array($qsqladminprofile);
 }
 if(isset($_SESSION['Email']))
 {
-	$sqlstudentprofile = "SELECT * FROM mentors where Email ='" . $_SESSION['Email'] . "'";
-	$qsqlstudentprofile = mysqli_query($dbh,$sqlstudentprofile);
+	$sqlmentorprofile = "SELECT * FROM mentors where Email ='" . $_SESSION['Email'] . "'";
+	$qsqlmentorprofile = mysqli_query($dbh,$sqlmentorprofile);
 	echo mysqli_error($dbh);
-	$rsstudentprofile = mysqli_fetch_array($qsqlstudentprofile);
+	$rsmentorprofile = mysqli_fetch_array($qsqlmentorprofile);
 }
 ?>
 <meta charset="utf-8">
