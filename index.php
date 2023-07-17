@@ -31,7 +31,7 @@
             {
                 $rslogin = mysqli_fetch_array($qsql);
                 $_SESSION['Email'] = $rslogin['Email'];
-                echo "<script>window.location='dashboard.php';</script>";
+                echo "<script>window.location='dashboard-mentor.php';</script>";
             }
             else
             {
