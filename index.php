@@ -78,9 +78,9 @@
                                                     <div class="panel-body p-20">
                                                         <form class="form-horizontal" method="post">
                                                             <div class="form-group">
-                                                                <label for="inputEmail3" class="col-sm-6 control-label">Search your result</label>
+                                                                <label for="inputEmail3" class="col-sm-6 control-label">Results</label>
                                                                 <div class="col-sm-6">
-                                                                <a href="find-result.php">click here</a>
+                                                                <i><b><a href="find-result.php">CLICK HERE</a></b></i>
                                                                 </div>
                                                             </div>
 

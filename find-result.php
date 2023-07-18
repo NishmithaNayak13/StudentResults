@@ -1,13 +1,14 @@
 <?php
 session_start();
-error_reporting(0);
-include('includes/config.php');?><!DOCTYPE html>
+include('includes/config.php');
+?>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Student Result Management System</title>
+        <title>Student Result Review System</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -28,43 +29,34 @@ include('includes/config.php');?><!DOCTYPE html>
                                 </div>
                             </div>
                             <div class="panel-body p-20">
-
-                           
-
                                 <form action="result.php" method="post">
                                 	<div class="form-group">
-                                		<label for="rollid">Enter your Roll Id</label>
-                                        <input type="text" class="form-control" id="rollid" placeholder="Enter Your Roll Id" autocomplete="off" name="rollid">
+                                		<label for="rollid">USN</label>
+                                        <input type="text" class="form-control" id="usn" placeholder="Enter your USN" autocomplete="off" name="usn" required>
                                 	</div>
-                               <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Class</label>
- <select name="class" class="form-control" id="default" required="required">
-<option value="">Select Class</option>
-<?php $sql = "SELECT * from tblclasses";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->ClassName); ?>&nbsp; Section-<?php echo htmlentities($result->Section); ?></option>
-<?php }} ?>
- </select>
-</div>
-
-    
+                                    <div class="form-group">
+                                    <label for="default" class="col-sm-2 control-label">Batch</label>
+                                        <select name="batch" class="form-control" id="batch" required>
+                                                <option value="">Select Batch</option>
+                                                <?php $sql = "SELECT * from tblclasses";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rscourse = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rscourse[Batch]'>$rscourse[Batch]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
                                     <div class="form-group mt-20">
                                         <div class="">
-                                      
                                             <button type="submit" class="btn btn-success btn-labeled pull-right">Search<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>
                                             <div class="clearfix"></div>
                                         </div>
                                     </div>
-
-                                       <div class="col-sm-6">
-                                                               <a href="index.php">Back to Home</a>
-                                                            </div>
+                                    <div class="col-sm-6">
+                                        <b><a href="index.php"><i class="fa fa-arrow-left"></i> Back to Home</a></b>
+                                    </div>
                                 </form>
 
                                 <hr>
