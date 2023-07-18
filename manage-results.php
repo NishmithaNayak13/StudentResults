@@ -76,15 +76,45 @@ if(!isset($_SESSION['UserName']))
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Mentor</th>
                                                         <th>USN</th>
-                                                        <th>Batch</th>
-                                                        <th>Mentor</th>
-                                                        <th>Status</th>
+                                                        <th>Subject</th>
+                                                        <th>MSE 1</th>
+                                                        <th>MSE 2</th>
+                                                        <th>Task 1</th>
+                                                        <th>Task 2</th>
+                                                        <th>CIE</th>
+                                                        <th>SEE</th>
+                                                        <th>SGPA</th>
+                                                        <th>CGPA</th>
                                                         <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <?php 
+                                                        $sql = "SELECT * from results";
+                                                        $query = mysqli_query($dbh,$sql);
+                                                        while($rsview = mysqli_fetch_array($query))
+                                                        {
+                                                            echo "<tr>
+                                                                <td>$rsview[stdid]</td> 
+                                                                <td>$rsview[USN]</td>
+                                                                <td>$rsview[Subject]</td>                                                                 
+                                                                <td>$rsview[MSE1]</td>
+                                                                <td>$rsview[MSE2]</td>
+                                                                <td>$rsview[Task1]</td>
+                                                                <td>$rsview[Task2]</td>
+                                                                <td>$rsview[CIE]</td>
+                                                                <td>$rsview[SEE]</td>
+                                                                <td>$rsview[SGPA]</td>
+                                                                <td>$rsview[CGPA] <br>";
+                                                                echo"</td>
+                                                                        <td>
+                                                                            <a href='edit-result.php?editid=$rsview[USN]' class='btn btn-info'>Edit</a>
+                                                                            <a href='manage-results.php?delid=$rsview[USN]' class='btn btn-danger' onclick='return confirmdel()' >Delete</a>
+                                                                        </td>
+                                                                </tr>";
+                                                        }
+                                                        ?>
                                                     </tbody>
                                                 </table>
                                             </div>

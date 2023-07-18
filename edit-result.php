@@ -1,35 +1,20 @@
 <?php
-session_start();
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])=="")
-    {   
-    header("Location: index.php"); 
-    }
-    else{
-
-$stid=intval($_GET['stid']);
+if(isset($_SESSION['UserName']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
 if(isset($_POST['submit']))
 {
-
-$rowid=$_POST['id'];
-$marks=$_POST['marks']; 
-
-foreach($_POST['id'] as $count => $id){
-$mrks=$marks[$count];
-$iid=$rowid[$count];
-for($i=0;$i<=$count;$i++) {
-
-$sql="update tblresult  set marks=:mrks where id=:iid ";
-$query = $dbh->prepare($sql);
-$query->bindParam(':mrks',$mrks,PDO::PARAM_STR);
-$query->bindParam(':iid',$iid,PDO::PARAM_STR);
-$query->execute();
-
-$msg="Result info updated successfully";
+    $sql="INSERT INTO results(Mentor,Batch,USN,Semester,Subject,MSE1,MSE2,Task1,Task2,CIE,SEE) VALUES('$_POST[mentor]','$_POST[batch]','$_POST[usn]','$_POST[semester]','$_POST[subject]','$_POST[mse1]','$_POST[mse2]','$_POST[task1]','$_POST[task2]','$_POST[cie]','$_POST[see]')";
+    $qsql = mysqli_query($dbh,$sql);
+    echo mysqli_error($dbh);
+    if(mysqli_affected_rows($dbh)==1)
+    {
+        echo "<script>alert('Student result added successfully...');</script>";
+        echo "<script>window.location='dashboard.php';</script>";
+    }
 }
-}
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +22,7 @@ $msg="Result info updated successfully";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin|  Student result info < </title>
+        <title>Edit Result </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -65,7 +50,7 @@ $msg="Result info updated successfully";
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">Student Result Info</h2>
+                                    <h2 class="title">Edit Result</h2>
                                 
                                 </div>
                                 
@@ -77,7 +62,7 @@ $msg="Result info updated successfully";
                                     <ul class="breadcrumb">
                                         <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
                                 
-                                        <li class="active">Result Info</li>
+                                        <li class="active">Student Result</li>
                                     </ul>
                                 </div>
                              
@@ -89,84 +74,142 @@ $msg="Result info updated successfully";
                         <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel">
-                                            <div class="panel-heading">
-                                                <div class="panel-title">
-                                                    <h5>Update the Result info</h5>
-                                                </div>
-                                            </div>
+                                           
                                             <div class="panel-body">
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
+
+                                         <form class="form-horizontal" method="post">
+
+                                        
+                                        <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Mentor</label>
+                                        <div class="col-sm-10">
+                                           <select name="mentor" class="form-control" id="mentor" required="required">
+                                                <option value="">Select Mentor</option>
+                                                <?php $sql = "SELECT * from mentors";
+                                                 $query = mysqli_query($dbh,$sql);
+                                                 echo mysqli_error($dbh);
+                                                 while($rscourse = mysqli_fetch_array($query))
+                                                     {  
+                                                         echo "<option value='$rscourse[Name]'>$rscourse[Name]</option>";
+                                                     } ?>
+                                            </select>
                                         </div>
-                                        <?php } ?>
-                                                <form class="form-horizontal" method="post">
-
-<?php 
-
-$ret = "SELECT tblstudents.StudentName,tblclasses.ClassName,tblclasses.Section from tblresult join tblstudents on tblresult.StudentId=tblresult.StudentId join tblsubjects on tblsubjects.id=tblresult.SubjectId join tblclasses on tblclasses.id=tblstudents.ClassId where tblstudents.StudentId=:stid limit 1";
-$stmt = $dbh->prepare($ret);
-$stmt->bindParam(':stid',$stid,PDO::PARAM_STR);
-$stmt->execute();
-$result=$stmt->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($stmt->rowCount() > 0)
-{
-foreach($result as $row)
-{  ?>
-
-
-                                                    <div class="form-group">
-                                            <label for="default" class="col-sm-2 control-label">Class</label>
-                                                        <div class="col-sm-10">
-<?php echo htmlentities($row->ClassName)?>(<?php echo htmlentities($row->Section)?>)
-                                                        </div>
-                                                    </div>
-<div class="form-group">
-<label for="default" class="col-sm-2 control-label">Full Name</label>
-<div class="col-sm-10">
-<?php echo htmlentities($row->StudentName);?>
-</div>
-</div>
-<?php } }?>
-
-
-
-<?php 
-$sql = "SELECT distinct tblstudents.StudentName,tblstudents.StudentId,tblclasses.ClassName,tblclasses.Section,tblsubjects.SubjectName,tblresult.marks,tblresult.id as resultid from tblresult join tblstudents on tblstudents.StudentId=tblresult.StudentId join tblsubjects on tblsubjects.id=tblresult.SubjectId join tblclasses on tblclasses.id=tblstudents.ClassId where tblstudents.StudentId=:stid ";
-$query = $dbh->prepare($sql);
-$query->bindParam(':stid',$stid,PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{  ?>
-
-
-
-<div class="form-group">
-<label for="default" class="col-sm-2 control-label"><?php echo htmlentities($result->SubjectName)?></label>
-<div class="col-sm-10">
-<input type="hidden" name="id[]" value="<?php echo htmlentities($result->resultid)?>">
-<input type="text" name="marks[]" class="form-control" id="marks" value="<?php echo htmlentities($result->marks)?>" maxlength="5" required="required" autocomplete="off">
-</div>
-</div>
-
-
-
-
-<?php }} ?>                                                    
-
-                                                    
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Batch</label>
+                                        <div class="col-sm-10">
+                                            <select name="batch" class="form-control" id="batch" required="required">
+                                                <option value="">Select Batch</option>
+                                                <?php $sql = "SELECT * from tblclasses";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rscourse = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rscourse[Batch]'>$rscourse[Batch]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Student USN</label>
+                                        <div class="col-sm-10">
+                                            <select name="usn" class="form-control" id="usn" required="required">
+                                                <option value="">Select USN</option>
+                                                <?php $sql = "SELECT * from tblstudents";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[USN]'>$rs[USN]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Semester</label>
+                                        <div class="col-sm-10">
+                                            <select name="semester" class="form-control" id="semester" required="required">
+                                                <option value="">Select Semester</option>
+                                                <?php $sql = "SELECT DISTINCT(Semester) FROM tblsubjects";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[Semester]'>$rs[Semester]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">Subject</label>
+                                        <div class="col-sm-10">
+                                            <select name="subject" class="form-control" id="subject" required="required">
+                                                <option value="">Select Subject</option>
+                                                <?php $sql = "SELECT * from tblsubjects";
+                                                $query = mysqli_query($dbh,$sql);
+                                                echo mysqli_error($dbh);
+                                                while($rs = mysqli_fetch_array($query))
+                                                    {  
+                                                        echo "<option value='$rs[SubjectName]'>$rs[SubjectName]</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">MSE 1</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="mse1" class="form-control" id="mse1" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">MSE 2</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="mse2" class="form-control" id="mse2" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">TASK 1</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="task1" class="form-control" id="task1" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">TASK 2</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="task2" class="form-control" id="task2" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">CIE</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="cie" class="form-control" id="cie" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">SEE</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="see" class="form-control" id="see" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">SGPA</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="sgpa" class="form-control" id="sgpa" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default" class="col-sm-2 control-label">CGPA</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" name="cgpa" class="form-control" id="cgpa" required="required" autocomplete="off">
+                                        </div>
+                                    </div> -->
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                                                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Declare Result</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -204,4 +247,3 @@ foreach($results as $result)
         </script>
     </body>
 </html>
-<?PHP } ?>
