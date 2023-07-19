@@ -1,6 +1,5 @@
 j<?php
 session_start();
-error_reporting(0);
 include('includes/config.php');
 ?>
 <!DOCTYPE html>
@@ -30,7 +29,7 @@ include('includes/config.php');
                         <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-12">
-                                    <h2 class="title" align="center">Result Management System</h2>
+                                    <h2 class="title" align="center">Result Review System</h2>
                                 </div>
                             </div>
                             <!-- /.row -->
@@ -43,118 +42,43 @@ include('includes/config.php');
                             <div class="container-fluid">
 
                                 <div class="row">
-                              
-                             
-
                                     <div class="col-md-8 col-md-offset-2">
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-<?php
-
-$rollid=$_POST['rollid'];
-$classid=$_POST['class'];
-$_SESSION['rollid']=$rollid;
-$_SESSION['classid']=$classid;
-$qery = "SELECT   tblstudents.StudentName,tblstudents.RollId,tblstudents.RegDate,tblstudents.StudentId,tblstudents.Status,tblclasses.ClassName,tblclasses.Section from tblstudents join tblclasses on tblclasses.id=tblstudents.ClassId where tblstudents.RollId=:rollid and tblstudents.ClassId=:classid ";
-$stmt = $dbh->prepare($qery);
-$stmt->bindParam(':rollid',$rollid,PDO::PARAM_STR);
-$stmt->bindParam(':classid',$classid,PDO::PARAM_STR);
-$stmt->execute();
-$resultss=$stmt->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($stmt->rowCount() > 0)
-{
-foreach($resultss as $row)
-{   ?>
-<p><b>Student Name :</b> <?php echo htmlentities($row->StudentName);?></p>
-<p><b>Student Roll Id :</b> <?php echo htmlentities($row->RollId);?>
-<p><b>Student Class:</b> <?php echo htmlentities($row->ClassName);?>(<?php echo htmlentities($row->Section);?>)
-<?php }
-
-    ?>
-                                            </div>
+                                                </div>
                                             <div class="panel-body p-20">
-
-
-
-
-
-
-
                                                 <table class="table table-hover table-bordered">
                                                 <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Subject</th>    
-                                                            <th>Marks</th>
-                                                        </tr>
-                                               </thead>
-  
-
-
-                                                	
-                                                	<tbody>
-<?php                                              
-// Code for result
-
- $query ="select t.StudentName,t.RollId,t.ClassId,t.marks,SubjectId,tblsubjects.SubjectName from (select sts.StudentName,sts.RollId,sts.ClassId,tr.marks,SubjectId from tblstudents as sts join  tblresult as tr on tr.StudentId=sts.StudentId) as t join tblsubjects on tblsubjects.id=t.SubjectId where (t.RollId=:rollid and t.ClassId=:classid)";
-$query= $dbh -> prepare($query);
-$query->bindParam(':rollid',$rollid,PDO::PARAM_STR);
-$query->bindParam(':classid',$classid,PDO::PARAM_STR);
-$query-> execute();  
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($countrow=$query->rowCount()>0)
-{ 
-
-foreach($results as $result){
-
-    ?>
-
-                                                		<tr>
-                                                <th scope="row"><?php echo htmlentities($cnt);?></th>
-                                                			<td><?php echo htmlentities($result->SubjectName);?></td>
-                                                			<td><?php echo htmlentities($totalmarks=$result->marks);?></td>
-                                                		</tr>
-<?php 
-$totlcount+=$totalmarks;
-$cnt++;}
-?>
-<tr>
-                                                <th scope="row" colspan="2">Total Marks</th>
-<td><b><?php echo htmlentities($totlcount); ?></b> out of <b><?php echo htmlentities($outof=($cnt-1)*100); ?></b></td>
-                                                        </tr>
-<tr>
-                                                <th scope="row" colspan="2">Percntage</th>           
-                                                            <td><b><?php echo  htmlentities($totlcount*(100)/$outof); ?> %</b></td>
-                                                             </tr>
-<tr>
-                                                <th scope="row" colspan="2">Download Result</th>           
-                                                            <td><b><a href="download-result.php">Download </a> </b></td>
-                                                             </tr>
-
- <?php } else { ?>     
-<div class="alert alert-warning left-icon-alert" role="alert">
-                                            <strong>Notice!</strong> Your result not declare yet
- <?php }
-?>
-                                        </div>
- <?php 
- } else
- {?>
-
-<div class="alert alert-danger left-icon-alert" role="alert">
-strong>Oh snap!</strong>
-<?php
-echo htmlentities("Invalid Roll Id");
- }
-?>
-                                        </div>
-
-
-
-                                                	</tbody>
+                                                    <tr>
+                                                        <th rowspan="2">USN</th>
+                                                        <th rowspan="2">Name</th>
+                                                        <th colspan="8" class="text-center">Subjects</th>
+                                                        <th rowspan="2">SGPA</th>
+                                                        <th rowspan="2">CGPA</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Sub 1</th>
+                                                        <th>Sub 2</th>
+                                                        <th>Sub 3</th>
+                                                        <th>Sub 4</th>
+                                                        <th>Sub 5</th>
+                                                        <th>Sub 6</th>
+                                                        <th>Sub 7</th>
+                                                        <th>Sub 8</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                                <!-- <th scope="row" colspan="2">Download Result</th>           
+                                                                        <td><b><a href="download-result.php">Download </a> </b></td>
+                                                            </tr>     
+                                                        <div class="alert alert-warning left-icon-alert" role="alert">
+                                                            <strong>Notice!</strong> Your result not declare yet
+                                                        </div>
+                                                        <div class="alert alert-danger left-icon-alert" role="alert">
+                                                            strong>Oh snap!</strong>
+                                                        </div> -->
+                                                </tbody>
                                                 </table>
 
                                             </div>

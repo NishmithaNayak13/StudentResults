@@ -75,127 +75,122 @@ if (!isset($_SESSION['Email'])) {
                                         </select>
                                     </div>
                                 </div>
-                            </form>
+                                    <?php
+                                    if (isset($_POST['batch'])) {
+                                        $selectedBatch = $_POST['batch'];
+                                        $selectedSemester = '';
 
-                            <?php
-                            if (isset($_POST['batch'])) {
-                                $selectedBatch = $_POST['batch'];
-                                $selectedSemester = '';
-
-                                // Retrieve the selected batch's semester
-                                $sqlSemester = "SELECT Semester FROM tblclasses WHERE Batch='$selectedBatch'";
-                                $querySemester = mysqli_query($dbh, $sqlSemester);
-                                if ($rowSemester = mysqli_fetch_assoc($querySemester)) {
-                                    $selectedSemester = $rowSemester['Semester'];
-                                }
-
-                                if ($selectedSemester !== '') {
-                                    echo '<br><br>';
-                                    echo '<div class="form-group">';
-                                    echo '<label for="semester" class="col-sm-2 control-label">Semester</label>';
-                                    echo '<div class="col-sm-10">';
-                                    echo '<input type="text" name="semester" class="form-control" id="semester" value="' . $selectedSemester . '" readonly>';
-                                    echo '</div>';
-                                    echo '</div>';
-
-                                    echo '<br><br>';
-                                    echo '<div class="form-group">';
-                                    echo '<label for="subject" class="col-sm-2 control-label">Subject</label>';
-                                    echo '<div class="col-sm-10">';
-                                    echo '<select name="subject" class="form-control" id="subject" required>';
-                                    echo '<option value="">Select Subject</option>';
-
-                                    // Retrieve the subjects for the selected semester
-                                    $sqlSubjects = "SELECT SubjectName, SubjectCode FROM tblsubjects WHERE Semester='$selectedSemester'";
-                                    $querySubjects = mysqli_query($dbh, $sqlSubjects);
-                                    while ($rowSubject = mysqli_fetch_assoc($querySubjects)) {
-                                        $subjectName = $rowSubject['SubjectName'];
-                                        $subjectCode = $rowSubject['SubjectCode'];
-                                        $selected = isset($_POST['subject']) && $_POST['subject'] == $subjectCode ? 'selected' : '';
-                                        echo "<option value='$subjectCode' $selected>$subjectName</option>";
-                                    }
-
-                                    echo '</select>';
-                                    echo '</div>';
-                                    echo '</div>';
-
-                                    echo '<br><br>';
-                                    echo '<div class="form-group">';
-                                    echo '<label for="mentor" class="col-sm-2 control-label">Mentor</label>';
-                                    echo '<div class="col-sm-10">';
-                                    $mentorName = "";
-                                    $mentorEmail = $_SESSION['Email'];
-                                    $sqlMentor = "SELECT Name FROM mentors WHERE Email='$mentorEmail'";
-                                    $queryMentor = mysqli_query($dbh, $sqlMentor);
-                                    if ($rowMentor = mysqli_fetch_assoc($queryMentor)) {
-                                        $mentorName = $rowMentor['Name'];
-                                    }
-                                    echo '<input type="text" name="mentor" class="form-control" id="mentor" value="' . $mentorName . '" readonly>';
-                                    echo '</div>';
-                                    echo '</div>';
-
-                                    echo '<br><br><br>';
-                                    echo '<table>';
-                                    echo '<thead>';
-                                    echo '<tr>';
-                                    echo '<th>Student Name</th>';
-                                    echo '<th>USN</th>';
-                                    echo '<th>MSE 1</th>';
-                                    echo '<th>MSE 2</th>';
-                                    echo '<th>Task 1</th>';
-                                    echo '<th>Task 2</th>';
-                                    echo '<th>CIE</th>';
-                                    echo '<th>SEE</th>';
-                                    echo '<th>SGPA</th>';
-                                    echo '<th>CGPA</th>';
-                                    echo '</tr>';
-                                    echo '</thead>';
-                                    echo '<tbody>';
-
-                                    $mentorEmail = $_SESSION['Email'];
-                                    $mentorQuery = "SELECT Name FROM mentors WHERE Email='$mentorEmail'";
-                                    $qmentor = mysqli_query($dbh, $mentorQuery);
-                                    $mentorRow = mysqli_fetch_array($qmentor);
-                                    $mentor = $mentorRow['Name'];
-
-                                    $sqlStudents = "SELECT * FROM tblstudents WHERE Batch='$selectedBatch' AND Mentor='$mentor'";
-                                    $queryStudents = mysqli_query($dbh, $sqlStudents);
-                                    if (mysqli_num_rows($queryStudents) > 0) {
-                                        $i = 0;
-                                        while ($rowStudent = mysqli_fetch_assoc($queryStudents)) {
-                                            $studentName = $rowStudent['StudentName'];
-                                            $usn = $rowStudent['USN'];
-                                            echo '<tr>';
-                                            echo '<td><input type="text" name="cell[' . $i . '][1]" value="' . $studentName . '" readonly></td>';
-                                            echo '<td><input type="text" name="cell[' . $i . '][2]" value="' . $usn . '" readonly></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][3]" min="0" max="15" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][4]" min="0" max="15" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][5]" min="0" max="10" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][6]" min="0" max="10" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][7]" min="0" max="50" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][8]" min="0" max="50" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][9]" min="0" max="10" value=""></td>';
-                                            echo '<td><input type="number" name="cell[' . $i . '][10]" min="0" max="10" value=""></td>';
-                                            echo '</tr>';
-                                            $i++;
+                                        // Retrieve the selected batch's semester
+                                        $sqlSemester = "SELECT Semester FROM tblclasses WHERE Batch='$selectedBatch'";
+                                        $querySemester = mysqli_query($dbh, $sqlSemester);
+                                        if ($rowSemester = mysqli_fetch_assoc($querySemester)) {
+                                            $selectedSemester = $rowSemester['Semester'];
                                         }
-                                    } else {
-                                        echo '<tr><td colspan="10">No students</td></tr>';
+
+                                        if ($selectedSemester !== '') {
+                                            echo '<br><br>';
+                                            echo '<div class="form-group">';
+                                            echo '<label for="semester" class="col-sm-2 control-label">Semester</label>';
+                                            echo '<div class="col-sm-10">';
+                                            echo '<input type="text" name="semester" class="form-control" id="semester" value="' . $selectedSemester . '" readonly>';
+                                            echo '</div>';
+                                            echo '</div>';
+
+                                            echo '<br><br>';
+                                            echo '<div class="form-group">';
+                                            echo '<label for="subject" class="col-sm-2 control-label">Subject</label>';
+                                            echo '<div class="col-sm-10">';
+                                            echo '<select name="subject" class="form-control" id="subject" required>';
+                                            echo '<option value="">Select Subject</option>';
+
+                                            // Retrieve the subjects for the selected semester
+                                            $sqlSubjects = "SELECT SubjectName, SubjectCode FROM tblsubjects WHERE Semester='$selectedSemester'";
+                                            $querySubjects = mysqli_query($dbh, $sqlSubjects);
+                                            while ($rowSubject = mysqli_fetch_assoc($querySubjects)) {
+                                                $subjectName = $rowSubject['SubjectName'];
+                                                $subjectCode = $rowSubject['SubjectCode'];
+                                                $selected = isset($_POST['subject']) && $_POST['subject'] == $subjectCode ? 'selected' : '';
+                                                echo "<option value='$subjectCode' $selected>$subjectName</option>";
+                                            }
+
+                                            echo '</select>';
+                                            echo '</div>';
+                                            echo '</div>';
+
+                                            echo '<br><br>';
+                                            echo '<div class="form-group">';
+                                            echo '<label for="mentor" class="col-sm-2 control-label">Mentor</label>';
+                                            echo '<div class="col-sm-10">';
+                                            $mentorName = "";
+                                            $mentorEmail = $_SESSION['Email'];
+                                            $sqlMentor = "SELECT Name FROM mentors WHERE Email='$mentorEmail'";
+                                            $queryMentor = mysqli_query($dbh, $sqlMentor);
+                                            if ($rowMentor = mysqli_fetch_assoc($queryMentor)) {
+                                                $mentorName = $rowMentor['Name'];
+                                            }
+                                            echo '<input type="text" name="mentor" class="form-control" id="mentor" value="' . $mentorName . '" readonly>';
+                                            echo '</div>';
+                                            echo '</div>';
+
+                                            echo '<br><br><br>';
+                                            echo '<table>';
+                                            echo '<thead>';
+                                            echo '<tr>';
+                                            echo '<th>Student Name</th>';
+                                            echo '<th>USN</th>';
+                                            echo '<th>MSE 1</th>';
+                                            echo '<th>MSE 2</th>';
+                                            echo '<th>Task 1</th>';
+                                            echo '<th>Task 2</th>';
+                                            echo '<th>CIE</th>';
+                                            echo '<th>SEE</th>';
+                                            echo '<th>SGPA</th>';
+                                            echo '<th>CGPA</th>';
+                                            echo '</tr>';
+                                            echo '</thead>';
+                                            echo '<tbody>';
+
+                                            $mentorEmail = $_SESSION['Email'];
+                                            $mentorQuery = "SELECT Name FROM mentors WHERE Email='$mentorEmail'";
+                                            $qmentor = mysqli_query($dbh, $mentorQuery);
+                                            $mentorRow = mysqli_fetch_array($qmentor);
+                                            $mentor = $mentorRow['Name'];
+
+                                            $sqlStudents = "SELECT * FROM tblstudents WHERE Batch='$selectedBatch' AND Mentor='$mentor'";
+                                            $queryStudents = mysqli_query($dbh, $sqlStudents);
+                                            if (mysqli_num_rows($queryStudents) > 0) {
+                                                $i = 0;
+                                                while ($rowStudent = mysqli_fetch_assoc($queryStudents)) {
+                                                    $studentName = $rowStudent['StudentName'];
+                                                    $usn = $rowStudent['USN'];
+                                                    echo '<tr>';
+                                                    echo '<td><input type="text" name="cell[' . $i . '][1]" value="' . $studentName . '" readonly></td>';
+                                                    echo '<td><input type="text" name="cell[' . $i . '][2]" value="' . $usn . '" readonly></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][3]" min="0" max="15" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][4]" min="0" max="15" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][5]" min="0" max="10" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][6]" min="0" max="10" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][7]" min="0" max="50" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][8]" min="0" max="50" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][9]" min="0" max="10" value=""></td>';
+                                                    echo '<td><input type="number" name="cell[' . $i . '][10]" min="0" max="10" value=""></td>';
+                                                    echo '</tr>';
+                                                    $i++;
+                                                }
+                                            } else {
+                                                echo '<tr><td colspan="10">No students</td></tr>';
+                                            }
+
+                                            echo '</tbody>';
+                                            echo '</table>';
+
+                                            echo '<div class="form-group">';
+                                            echo '<div class="col-sm-offset-2 col-sm-10">';
+                                            echo '<button type="submit" name="submit" class="btn btn-primary">Add</button>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                        }
                                     }
-
-                                    echo '</tbody>';
-                                    echo '</table>';
-
-                                    echo '<div class="form-group">';
-                                    echo '<div class="col-sm-offset-2 col-sm-10">';
-                                    echo '<button type="submit" name="submit" class="btn btn-primary">Add</button>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                }
-                            }
-                            ?>
-
-                            <?php
                             if (isset($_POST['submit'])) {
                                 $batch = $_POST['batch'];
                                 $subject = $_POST['subject'];
@@ -223,6 +218,7 @@ if (!isset($_SESSION['Email'])) {
                                 exit;
                             }
                             ?>
+                            </form>
                         </div>
                     </div>
                 </div>
