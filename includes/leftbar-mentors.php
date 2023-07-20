@@ -63,6 +63,7 @@
                                     </li>
                                     <li><a href="excelsheet.php"><i class="fa fa fa-server"></i> <span> Excel Sheet</span></a></li>
                                     <li><a href="table-results.php"><i class="fa fa fa-server"></i> <span>Results</span></a></li>
+                                    <li><a href="students-review.php"><i class="fa fa fa-server"></i> <span>Review</span></a></li>
                             </div>
                             <!-- /.sidebar-nav -->
                         </div>
