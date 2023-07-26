@@ -42,10 +42,10 @@ if(!isset($_SESSION['Email']))
     </head>
     <body class="top-navbar-fixed">
         <div class="main-wrapper">
-            <?php include('includes/topbar.php');?> 
+            <?php include('includes/topbar-mentors.php');?> 
             <div class="content-wrapper">
                 <div class="content-container">
-                    <?php include('includes/leftbar.php');?>  
+                    <?php include('includes/leftbar-mentors.php');?>  
                         <div class="main-page">
                             <div class="container-fluid">
                                 <div class="row page-title-div">

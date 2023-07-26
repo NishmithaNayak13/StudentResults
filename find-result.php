@@ -32,20 +32,6 @@ include('includes/config.php');
         <label for="usn">USN</label>
         <input type="text" class="form-control" id="usn" placeholder="Enter your USN" autocomplete="off" name="usn" required>
     </div>
-    <div class="form-group">
-        <label for="default" class="col-sm-2 control-label">Batch</label>
-        <select name="batch" class="form-control" id="batch" required>
-            <option value="">Select Batch</option>
-            <?php
-            $sql = "SELECT * from tblclasses";
-            $query = mysqli_query($dbh, $sql);
-            echo mysqli_error($dbh);
-            while ($rscourse = mysqli_fetch_array($query)) {
-                echo "<option value='$rscourse[Batch]'>$rscourse[Batch]</option>";
-            }
-            ?>
-        </select>
-    </div>
     <div class="form-group mt-20">
         <div class="">
             <button type="submit" class="btn btn-success btn-labeled pull-right">Search<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button>
@@ -71,20 +57,7 @@ include('includes/config.php');
         <!-- /. -->
 
     </div>
-    <!-- /.main-wrapper -->
-
-    <!-- ========== COMMON JS FILES ========== -->
-    <!--<script src="js/jquery/jquery-2.2.4.min.js"></script>
-    <script src="js/jquery-ui/jquery-ui.min.js"></script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <script src="js/pace/pace.min.js"></script>
-    <script src="js/lobipanel/lobipanel.min.js"></script>
-    <script src="js/iscroll/iscroll.js"></script>-->
-
-    <!-- ========== PAGE JS FILES ========== -->
-    <!--<script src="js/icheck/icheck.min.js"></script>-->
-
-    <!-- ========== THEME JS ========== -->
+    
     <script src="js/main.js"></script>
     <script>
         $(function () {
@@ -93,7 +66,5 @@ include('includes/config.php');
             });
         });
     </script>
-
-    <!-- ========== ADD custom.js FILE BELOW WITH YOUR CHANGES ========== -->
 </body>
 </html>

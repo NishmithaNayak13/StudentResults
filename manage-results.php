@@ -4,6 +4,10 @@ if(!isset($_SESSION['UserName']))
 {
 	echo "<script>window.location='index.php';</script>";
 }
+if(!isset($_SESSION['Email']))
+{
+	echo "<script>window.location='index.php';</script>";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

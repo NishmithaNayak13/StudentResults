@@ -42,8 +42,6 @@
                                         <ul class="child-nav">
                                             <li><a href="create-subject.php"><i class="fa fa-bars"></i> <span>Create Subject</span></a></li>
                                             <li><a href="manage-subjects.php"><i class="fa fa fa-server"></i> <span>Manage Subjects</span></a></li>
-                                           <li><a href="add-subjectcombination.php"><i class="fa fa-newspaper-o"></i> <span>Add Subject Combination </span></a></li>
-                                           <a href="manage-subjectcombination.php"><i class="fa fa-newspaper-o"></i> <span>Manage Subject Combination </span></a></li>
                                         </ul>
                                     </li>
                                     <li class="has-children">
@@ -54,17 +52,10 @@
                                             <li><a href="manage-students.php"><i class="fa fa fa-server"></i> <span>Manage Students</span></a></li>
                                         </ul>
                                     </li>
-                                    <li class="has-children">
-                                        <a href="#"><i class="fa fa-info-circle"></i> <span>Result</span> <i class="fa fa-angle-right arrow"></i></a>
-                                        <ul class="child-nav">
-                                            <li><a href="add-result.php"><i class="fa fa-bars"></i> <span>Add Result</span></a></li>
-                                            <li><a href="manage-results.php"><i class="fa fa fa-server"></i> <span>Manage Result</span></a></li>
-                                           
-                                        </ul>
+                                        <li><a href="manage-results.php"><i class="fa fa fa-server"></i> <span>View Result</span></a></li>
                                         <li><a href="change-password.php"><i class="fa fa fa-server"></i> <span> Admin Change Password</span></a></li>                                           
                                     </li>
-                                    <li><a href="excelsheet.php"><i class="fa fa fa-server"></i> <span> Excel Sheet</span></a></li>
-                                    <li><a href="table-results.php"><i class="fa fa fa-server"></i> <span>Results</span></a></li>
+                                   
                             </div>
                             <!-- /.sidebar-nav -->
                         </div>

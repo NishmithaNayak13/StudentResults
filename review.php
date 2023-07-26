@@ -69,7 +69,7 @@ if (isset($_GET['charid'])) {
             new Chart(ctx1, {
                 type: 'line', // Update the type to 'line'
                 data: {
-                    labels: <?php echo json_encode(array_map(function($index) { return 'Data ' . ($index + 1); }, array_keys($sgpa_data))); ?>,
+                    labels: <?php echo json_encode(array_map(function($index) { return 'sem ' . ($index + 1); }, array_keys($sgpa_data))); ?>,
                     datasets: [sgpaData],
                 },
                 options: {
@@ -116,7 +116,7 @@ if (isset($_GET['charid'])) {
             new Chart(ctx2, {
                 type: 'line', // Update the type to 'line'
                 data: {
-                    labels: <?php echo json_encode(array_map(function($index) { return 'Data ' . ($index + 1); }, array_keys($cgpa_data))); ?>,
+                    labels: <?php echo json_encode(array_map(function($index) { return 'sem ' . ($index + 1); }, array_keys($cgpa_data))); ?>,
                     datasets: [cgpaData],
                 },
                 options: {
@@ -146,6 +146,9 @@ if (isset($_GET['charid'])) {
             });
         </script>
     <?php } ?>
+    <div class="col-sm-6">
+        <b><a href="students-review.php"><i class="fa fa-arrow-left"></i> Back to Home</a></b>
+    </div>
     <!-- ... Other JavaScript and body content ... -->
 </body>
 </html>

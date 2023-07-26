@@ -50,7 +50,7 @@ td {
 $totlcount=0;
 $rollid=$_SESSION['rollid'];
 $classid=$_SESSION['classid'];
-$qery = "SELECT   tblstudents.StudentName,tblstudents.RollId,tblstudents.RegDate,tblstudents.StudentId,tblstudents.Status,tblclasses.ClassName,tblclasses.Section from tblstudents join tblclasses on tblclasses.id=tblstudents.ClassId where tblstudents.RollId=? and tblstudents.ClassId=?";
+$qery = "SELECT   tblstudents.StudentName,tblstudents.USN, from tblstudents  on tblclasses.id=tblstudents.ClassId where tblstudents.RollId=? and tblstudents.ClassId=?";
 $stmt21 = $mysqli->prepare($qery);
 $stmt21->bind_param("ss",$rollid,$classid);
 $stmt21->execute();

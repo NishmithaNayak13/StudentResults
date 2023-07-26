@@ -78,7 +78,7 @@ if (!isset($_SESSION['UserName'])) {
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-success" href="manage-results.php">
                                         <?php
-                                            $sqlcount = "SELECT * FROM tblresult";
+                                            $sqlcount = "SELECT * FROM results";
                                             $qsqlcount = mysqli_query($dbh,$sqlcount);
                                             echo mysqli_num_rows($qsqlcount);
                                             ?>
@@ -95,7 +95,7 @@ if (!isset($_SESSION['UserName'])) {
                                             $sqlcount = "SELECT * FROM tblstudents";
                                             $qsqlcount = mysqli_query($dbh,$sqlcount);
                                             echo mysqli_num_rows($qsqlcount);
-                                            ?>
+                                        ?>
                                             <span class="number counter"></span>
                                             <span class="name">Students</span>
                                             <span class="bg-icon"><i class="fa fa-file-text"></i></span>
@@ -147,7 +147,7 @@ if (!isset($_SESSION['UserName'])) {
                   "showMethod": "fadeIn",
                   "hideMethod": "fadeOut"
                 }
-                toastr["success"]( "Welcome to student Result Management System!");
+                toastr["success"]( "Welcome to student Mentoring System!");
 
             });
         </script>
