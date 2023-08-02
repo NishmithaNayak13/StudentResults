@@ -5,44 +5,55 @@ if (!isset($_SESSION['Email'])) {
     header("Location: index.php");
     exit;
 }
-?>
-if(isset($_GET['promote']))
-{
-	$sql = "UPDATE tblclasses SET st_class='Passed Out' AND student_status='Inactive' WHERE st_class='Third Year'";
-	$qsql = mysqli_query($con,$sql);
-	echo mysqli_error($con);
-	if(mysqli_affected_rows($con) == 1)
-	{
-		echo "<script>alert('Students Promoted');</script>";
-		echo "<script>window.location='student_promotion.php';</script>";
-	}
-}
-if(isset($_GET['submit2']))
-{
-	$sqll = "UPDATE student SET st_class='Third Year' WHERE st_class='Second Year'";
-	$qsqll = mysqli_query($con,$sqll);
-	echo mysqli_error($con);
-	if(mysqli_affected_rows($con) == 1)
-	{
-		echo "<script>alert('Students Promoted to Third Year');</script>";
-		echo "<script>window.location='student_promotion.php';</script>";
-	}
-}
-if(isset($_GET['submit3']))
-{
-	$sel = "UPDATE student SET st_class='Second Year' WHERE st_class='First Year'";
-	$qsel = mysqli_query($con,$sel);
-	echo mysqli_error($con);
-	if(mysqli_affected_rows($con) == 1)
-	{
-		echo "<script>alert('Students Promoted to Second Year');</script>";
-		echo "<script>window.location='student_promotion.php';</script>";
-	}
-}
-?>
-</div>
 
-  <!-- event section -->
+if (isset($_GET['promote'])) {
+    // Assuming you have a 'batch' column in the student table
+    $currentBatch = $_GET['promote']; // The current batch to promote (e.g., 'Third Year')
+
+    // Check the current batch and promote students accordingly
+    switch ($currentBatch) {
+        case '4':
+            // Move Third Year students to Passed Out status
+            $sql = "UPDATE tblclasses SET Semester='Passed Out', student_status='Inactive' WHERE Batch='$currentBatch'";
+            $qsql = mysqli_query($dbh, $sql);
+            if (mysqli_affected_rows($dbh) > 0) {
+                echo "<script>alert('Students Promoted to Passed Out');</script>";
+                echo "<script>window.location='student-promotion.php';</script>";
+            }
+            break;
+        case '3':
+            // Move Second Year students to Third Year
+            $sql = "UPDATE tblclasses SET Semester='4' WHERE Batch='$currentBatch'";
+            $qsql = mysqli_query($dbh, $sql);
+            if (mysqli_affected_rows($dbh) > 0) {
+                echo "<script>alert('Students Promoted to fourth sem');</script>";
+                echo "<script>window.location='student_promotion.php';</script>";
+            }
+            break;
+        case '2':
+            // Move First Year students to Second Year
+            $sql = "UPDATE tblclasses SET Semester='3' WHERE Batch='$currentBatch'";
+            $qsql = mysqli_query($dbh, $sql);
+            if (mysqli_affected_rows($dbh) > 0) {
+                echo "<script>alert('Students Promoted to third sem');</script>";
+                echo "<script>window.location='student_promotion.php';</script>";
+            }
+		case '1':
+			// Move First Year students to Second Year
+			$sql = "UPDATE tblclasses SET Semester='2' WHERE Batch='$currentBatch'";
+			$qsql = mysqli_query($dbh, $sql);
+			if (mysqli_affected_rows($dbh) > 0) {
+			echo "<script>alert('Students Promoted to second sem');</script>";
+			echo "<script>window.location='student_promotion.php';</script>";
+			}
+            break;
+        default:
+            echo "Invalid batch selected for promotion";
+    }
+}
+?>
+
+  <!-- event section 
   <section class="event_section layout_padding">
   <form method="">
     <div class="container">
@@ -55,51 +66,29 @@ if(isset($_GET['submit3']))
         </p>
       </div>
       <div class="event_container">
-        <div class="">
+        <div class="">-->
 <!-- ####################VIEW TABLE STARTS HERE ######### ---->
 <table id="datatableplugin" class="table table-bordered">
 	<thead>
 		<tr>
-			<th>Image</th>
 			<th>Student Name</th>
-			<th>Course</th>
-			<th>Roll No.</th>
-			<th>Class</th>
-			<th>Gender</th>
-			<th>More</th>
-			<th>Status</th>
+			<th>USN</th>
+			<th>Batch</th>
+			<th>Sem</th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php
-	$sqlview = "SELECT student.*,course.course_title FROM  student LEFT JOIN course ON course.course_id=student.course_id WHERE st_class='Third Year'";
-		$qsqlview = mysqli_query($con,$sqlview);
+	$sqlview = "SELECT tblstudents.*,tblclasses.* FROM  tblstudents LEFT JOIN tblclasses ON course.course_id=student.course_id WHERE Semester='4'";
+		$qsqlview = mysqli_query($dbh,$sqlview);
 		while($rsview = mysqli_fetch_array($qsqlview))
 		{
-			$rsjsonarr = json_encode($rsview);
-			if($rsview['student_image'] == "")
-			{
-				$filename= "images/defaultimage.png";
-			}
-			else if(file_exists("studentimg/" .$rsview['student_image']))
-			{
-				$filename= "studentimg/" .$rsview['student_image'];
-			}
-			else
-			{
-				$filename= "images/defaultimage.png";
-			}
 			echo "<tr>
-				<td><img src='$filename' style='width: 75px;height:90px;' ></td>
-				<td>$rsview[student_name]</td>
-				<td>$rsview[course_title]</td>
-				<td>$rsview[student_rollno]</td>
-				<td>$rsview[st_class]</td>
-				<td>$rsview[gender]</td>
-				<td>";
-echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#loadStudentDetailedModal' onclick='funloadstudentprofile($rsjsonarr)'>View<br> More</button>";				
-				echo "</td>
-				<td>$rsview[student_status] <br>
+				
+				<td>$rsview[StudentName]</td>
+				<td>$rsview[USN]</td>
+				<td>$rsview[Batch]</td>
+				<td>$rsview[Semester]</td>
 				</tr>";
 		}
 	?>
@@ -107,7 +96,7 @@ echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-tar
 </table>
 <!-- ####################VIEW TABLE ENDS HERE ######### ---->
         </div>
-	   <button type="submit" name="submit1" id="submit1" class="btn btn-success">Promote</button>
+	   <button type="submit" name="promote" id="promote" class="btn btn-success">Promote</button>
       </div>
     </div>
 	</form>
